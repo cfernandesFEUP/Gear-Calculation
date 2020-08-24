@@ -1,4 +1,6 @@
 ## GEAR CALCULATOR ############################################################
+import sys
+sys.path.insert(1, '/GearC/')
 import numpy as np,  gearT,  gearM,  maagC,  LStage,  oils,  contact, bearings
 ## GEAR SELECTION ##
 gear = 'C14'                    # 'C40',  '501',  '701',  '951',  'TPA'
