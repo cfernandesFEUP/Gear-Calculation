@@ -6,12 +6,12 @@ This version includes:
 
 - the main file is 'GearCP.py':
     'GearCP.py' allows to select:
-        - Gear geometry (C14, C40, H501, H701, H951) which is saved into file "gearT.py" - additional geometries can be added
+        - Gear geometry (C14, C40, H501, H701, H951) which is saved into file "gears.py" - additional geometries can be added
         - Gear material:
             mat = [STEEL STEEL]; meaning pinion and gear material respectively;
         - Operating Conditions:
             nmotor - list of motor speeds (meaning output speed)
-            load - list of FZG load stages, available with load arm of 0.35 m and 0.5 m (check LStage.py); a required torque can also be defined.
+            load - list of FZG load stages, available with load arm of 0.35 m and 0.5 m (check LoadStage.py); a required torque can also be defined.
         - Oil Selection:
            'dry' - no lubricant, a Cofficient of Friction shoul be given
            'PAOR', 'MINR', etc - "oils.py"  according to papers [1, 2, 3]. It calculates the Coefficient of Friction using Schlenk approach and corresponding XL.
