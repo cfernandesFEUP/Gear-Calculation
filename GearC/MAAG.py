@@ -1,6 +1,6 @@
 ## MAAG GEAR CALCULATION ######################################################
 import numpy as np
-def maag(alpha, beta, m, z, x, b):
+def calc(alpha, beta, m, z, x, b):
     e_v = 0
     alpha = np.radians(alpha)                               # alpha in rad
     beta = np.radians(beta)                                 # beta in rad
