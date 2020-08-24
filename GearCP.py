@@ -1,16 +1,14 @@
-## GEAR CALCULATOR ############################################################
-import sys
-sys.path.insert(1, '/GearC/')
-import numpy as np,  gearT,  gearM,  maagC,  LStage,  oils,  contact, bearings
+import numpy as np
+from GearC import gears, MAAG, contact, LoadStage, oils, material, bearings, plot
 ## GEAR SELECTION ##
 gear = 'C14'                    # 'C40',  '501',  '701',  '951',  'TPA'
-mat = ['STEEL', 'STEEL']            # 'PEEK',  'PA66',  'STEEL' (20MnCr5),  'ADI'
+mat = ['STEEL', 'STEEL']        # 'PEEK',  'PA66',  'STEEL' (20MnCr5),  'ADI'
 ## TYPE OF GEAR ###############################################################
-alpha, beta, m, z, x, b, dsh, Ra, Rq = gearT.gtype(gear)
+alpha, beta, m, z, x, b, dsh, Ra, Rq = gears.gtype(gear)
 ## MAAG CALCULATION ##
 mt, pt, pb, pbt, betab, al, r, rl, ra, rb, rf, alpha_t, alpha_tw, epslon_alpha,\
 epslon_a, epslon_beta, epslon_gama, galpha, galphai, Req, u, T1T2, T1A, T2A, AB,\
- AC, AD, AE, rA1, rA2, rB1, rB2, rD1, rD2 = maagC.maag(alpha, beta, m, z, x, b)
+ AC, AD, AE, rA1, rA2, rB1, rB2, rD1, rD2 = MAAG.calc(alpha, beta, m, z, x, b)
 ## LINES OF CONTACT ###########################################################
 lxi, xx, rr1, rr2 = contact.lines(betab, epslon_alpha, epslon_beta, epslon_gama,\
                                   rb, T1A, T2A, AE)
@@ -24,8 +22,8 @@ torque = np.zeros((len(load), 2))
 n = np.zeros((len(nmotor), 2))
 for i in range(len(load)):
     if type(load[i]) is str:
-        torque[i] = [LStage.gtorque(load[i], arm),\
-                                          u*LStage.gtorque(load[i], arm)]
+        torque[i] = [LoadStage.gtorque(load[i], arm),\
+                                          u*LoadStage.gtorque(load[i], arm)]
     else:
         torque[i] = [load[i], u*load[i]]
 for i in range(len(nmotor)):
@@ -43,7 +41,7 @@ else:
     mu = 0.0
     rohT, cp_lub, k_lub, beta_lub, piezo, miu, niu, xl, ubb, ubr = oils.astm(oil, Tlub)
 ## MATERIAL SELECTION #########################################################
-E, v, cpg, kg, rohg, sigmaHlim, sigmaFlim = gearM.matp(mat, Tbulk, NL)
+E, v, cpg, kg, rohg, sigmaHlim, sigmaFlim = material.matp(mat, Tbulk, NL)
 ## GEAR FORCES ################################################################
 Pin, fbt, fbn, ft, fr, fn, fa, fbear, frb, COF = contact.forces\
 (torque, omega, rb, rl, alpha_tw, betab, Req, Ra, xl, miu, lxi, mu, b)
@@ -60,7 +58,6 @@ pvl = ngears*(Mvl[:, :, 0]*omega[0, :] + Mvl[:, :, 1]*omega[1, :])
 ## TOTAL POWER LOSS (EXCLUDING NO-LOAD) #######################################
 pv = pvzp + pvl
 ## PLOT #######################################################################
-import plot
 plot.fig(xx, vg, qvzp1, qvzp2, avg_qvzp1, avg_qvzp2, lxi, p0, fnx)
 plot.prt(gear, mat, alpha, beta, m, z, x, al, pb, rf, r, rl, ra, epslon_alpha, epslon_beta\
        , epslon_gama, Req, AB, AC, AD, AE, E, v, cpg, kg, rohg, sigmaHlim, sigmaFlim, Pin, \
