@@ -4,8 +4,8 @@ Other Features not included on the repository: gear CAD geometry generation and 
 
 This version includes:
 
-- the main file is 'GearC.py':
-    'GearC.py' allows to select:
+- the main file is 'GearCP.py':
+    'GearCP.py' allows to select:
         - Gear geometry (C14, C40, H501, H701, H951) which is saved into file "gearT.py" - additional geometries can be added
         - Gear material:
             mat = [STEEL STEEL]; meaning pinion and gear material respectively;
