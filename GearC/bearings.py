@@ -46,10 +46,11 @@ def pl(btype, frb, fab, n, niu, ubb, ubr):
     phi_ish = 1/(1 + ((1.84e-9)*((n*dm)**1.28)*(niu**0.64)))
     phi_rs = 1/(np.exp(1)**(Krs*niu*n*(dr + Dr)*(np.sqrt(Kz/(2*(Dr - dr))))))
     usl = (phi_bl*ubear[0])+(1-phi_bl)*ubear[1] # sliding COF
-    print(phi_bl)
-    print(usl)
-    Msl = usl*Gsl                           # sliding torque
-    Mdrag = 2*(Kdrag*(n**2))                # drag torque
-    Mrr = phi_ish*phi_rs*Grr*(niu*n)**0.6   # rolling torque
+    Msl, Mrr, Mdrag, Mvl = [np.zeros((len(frb), len(n[0, :]), 2)) for _ in range(4)]
+    for j in range(len(n[0,:])):
+        for i in range(len(frb)):
+            Mdrag[i, j, :] = 2*(Kdrag*(n[:, j]**2)) # drag losses
+            Msl[i, j, :] = usl[:, j]*Gsl[i] # sliding torque
+            Mrr[i, j, :] = phi_ish[:, j]*phi_rs[:, j]*Grr[i]*(niu*n[:, j])**0.6 # rolling torque
     Mvl = (Mrr + Msl + Mdrag)*1e-3 #Total Torque
     return Mvl, phi_bl, Msl, Mrr, Mdrag, Grr, Gsl, usl

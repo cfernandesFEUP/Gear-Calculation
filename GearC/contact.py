@@ -19,8 +19,8 @@ def forces(torque, omega, rb, rl, alpha_tw, betab, Req, Ra, xl, miu, lxi, mu, b)
         COF = mu*np.ones((fbn.size, omega[0].size))
     return Pin, fbt, fbn, ft, fr, fn, fa, fbear, frb, COF
 ## LINES OF CONTACT ###########################################################
-def lines(betab, epslon_alpha, epslon_beta, epslon_gama, rb, T1A, T2A, AE):
-    xx, lxi = [np.linspace(0., 1., 10) for _ in range(2)]
+def lines(size, betab, epslon_alpha, epslon_beta, epslon_gama, rb, T1A, T2A, AE):
+    xx, lxi = [np.linspace(0., 1., size) for _ in range(2)]
     nn = np.arange(-np.floor(epslon_gama), np.floor(epslon_gama) + 1., 1.)
     xi, xi1, xi2, xi3, li, xxi = [np.zeros((len(nn), len(xx))) for _ in range(6)]
     for i in range(len(nn)):
@@ -49,9 +49,9 @@ def hertz(lxi, alpha_tw, betab, AE, T1A, T2A, T1T2, rb, E, omega, r, v, fbn, \
     vt = np.outer(omega[0],np.sqrt((rb[0]/1000)**2 + R[0]**2))
     vri = np.array([np.outer(omega[0],R[0]), np.outer(omega[1],R[1])])/np.cos(betab)
     term = kg*cpg*rohg
-    beta = np.array([np.outer(term[0],vri[0]), np.outer(term[1],vri[1])])
+    beta = np.array([term[0]*vri[0],term[1]*vri[1]])
     vtb = omega[0]*rb[0]/1000
-    p0p = [np.sqrt((2/np.pi)*max(fnx[i])*(Eeff/(2*Req/1000))) for i in range(len(fbn))]
+    p0p = np.array([np.sqrt((2/np.pi)*max(fnx[i])*(Eeff/(2*Req/1000))) for i in range(len(fbn))])
     vr = (vri[0] + vri[1])/2
     vg = abs(vri[1] - vri[0])
     SRR = vg/vr
@@ -64,10 +64,10 @@ def hertz(lxi, alpha_tw, betab, AE, T1A, T2A, T1T2, rb, E, omega, r, v, fbn, \
     pvzpx, qvzp1, qvzp2, avg_qvzp1, avg_qvzp2 = [np.zeros((len(fbn), len(omega[0]), len(xx))) for _ in range(5)]
     for i in range(len(fbn)):
         for j in range(len(omega[0])):
-            pvzpx[i,j] = fnx[i]*vg[j]*COF[i,j]
-            qvzp1[i,j] = gama*bk1[j]*pm[i]*COF[i,j]*vg[j]
-            qvzp2[i,j] = gama*bk2[j]*pm[i]*COF[i,j]*vg[j]
-            avg_qvzp1[i,j] = qvzp1[i,j]*a[i]*omega[0,j]/(np.pi*vri[0,j])
-            avg_qvzp2[i,j] = qvzp2[i,j]*a[i]*omega[1,j]/(np.pi*vri[1,j])
+            pvzpx[i,j,:] = fnx[i,:]*vg[j,:]*COF[i,j]
+            qvzp1[i,j,:] = gama*bk1[i,:]*pm[i,:]*COF[i,j]*vg[j,:]
+            qvzp2[i,j,:] = gama*bk2[i,:]*pm[i,:]*COF[i,j]*vg[j,:]
+            avg_qvzp1[i,j,:] = qvzp1[i,j,:]*a[i,:]*omega[0,j]/(np.pi*vri[0,j,:])
+            avg_qvzp2[i,j,:] = qvzp2[i,j,:]*a[i,:]*omega[1,j]/(np.pi*vri[1,j,:])
     return fnx, vt, vri, vr, vg, SRR, Eeff, a, p0, p0p, pm, Reff, pvzpx, pvzp, \
     qvzp1, qvzp2, avg_qvzp1, avg_qvzp2, HVL, bk1, bk2
