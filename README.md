@@ -1,4 +1,4 @@
-The software is capable to calculate gear geometry according to MAAG book, predict Hertz contact pressures, gear and rolling bearings power losses - only NJ 406 MA and QJ 308 N2MA are implemented because the software is intended for usage with FZG test rig results!
+The software is capable to calculate gear geometry according to MAAG book, predicts Hertz contact pressures, gear and rolling bearings power losses - only NJ 406 MA and QJ 308 N2MA are implemented because the software is intended for usage with FZG test rig results!
 
 Other Features not included on the repository: gear CAD geometry generation and automatic structured FEM mesh, CalculiX themo-mechanical integration, heat transfer coefficients calculation.
 
