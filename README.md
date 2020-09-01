@@ -1,6 +1,6 @@
-The software is capable to calculate gear geometry according to MAAG book, predict Hertz contact pressures, gear and rolling bearings power losses - only NJ 406 MA and QJ 308 N2MA are implemented because the software is intended for usage with FZG test rig results!
+The software is capable to calculate gear geometry according to MAAG book, predict Hertz contact pressure, gear and rolling bearings power losses - only NJ 406 MA and QJ 308 N2MA are implemented because the software is intended for usage with FZG test rig results!
 
-Other Features not included on the repository: gear CAD geometry generation and automatic structured FEM mesh, CalculiX themo-mechanical integration, heat transfer coefficients calculation.
+Other Features not included on the repository: gear CAD geometry generation and automatic structured FEM mesh, CalculiX themo-mechanical integration, heat transfer coefficients calculation - next release.
 
 This version includes:
 
@@ -8,7 +8,7 @@ This version includes:
 
     'GearCP.py' allows to select:
     
-        - Gear geometry (C14, C40, H501, H701, H951) which is saved into file "gears.py" - additional geometries can be added
+        - Gear geometry (C14, C40, H501, H701, H951) which is stored into the file "gears.py" - additional geometries can be added
         
         - Gear material:
         
@@ -21,8 +21,8 @@ This version includes:
             
         - Oil Selection:
         
-           'dry' - no lubricant, a Cofficient of Friction shoul be given
-           'PAOR', 'MINR', etc - "oils.py"  according to papers [1, 2, 3]. It calculates the Coefficient of Friction using Schlenk approach and corresponding XL.
+           'dry' - no lubricant, a Cofficient of Friction should be given - useful for plastic gearing
+           'PAOR', 'MINR', etc - "oils.py"  according to papers [1, 2, 3]. It calculates the Coefficient of Friction using Schlenk approach and corresponding XL -  additional lubricants can be added.
            
            
  How to Cite?
