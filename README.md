@@ -18,19 +18,19 @@ This version includes:
         - Operating Conditions:
         
             nmotor - list of motor speeds (meaning output speed)
-            load - list of FZG load stages, available with load arm of 0.35 m and 0.5 m (check LoadStage.py);
+            load - list of FZG load stages, available with load arm of 0.35 m and 0.5 m
+            (check LoadStage.py);
+            
             a required torque can also be defined.
             
         - Oil Selection:
         
-           'dry' - no lubricant, a Cofficient of Friction should be given - useful for plastic gearing
-           'PAOR', 'MINR', etc - "oils.py"  according to papers [1, 2, 3]. Calculates the Coefficient of Friction 
-           using Schlenk approach and corresponding XL - additional lubricants can be added.
-           
-           
- How to Cite?
-
- This program is on the basis of the following papers:
+           'dry' - no lubricant, a Cofficient of Friction should be given - useful for plastic gears
+           'PAOR', 'MINR', etc - "oils.py"  according to papers [1, 2, 3]. Calculates the 
+           Coefficient of Friction  using Schlenk approach and corresponding XL and 
+           additional lubricants can be added.
+                 
+ References:
  
  [1] Fernandes, C. M. C. G., Martins, R. C., & Seabra, J. H. O. (2014). 
  Torque loss of type C40 FZG gears lubricated with wind turbine gear oils. 
