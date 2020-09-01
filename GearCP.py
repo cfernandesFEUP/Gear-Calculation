@@ -1,19 +1,19 @@
 import numpy as np
 from GearC import gears, MAAG, contact, LoadStage, oils, material, bearings, plot
-## GEAR SELECTION ##
+## GEAR SELECTION ##################################################################
 gear = 'C40'                    # 'C40',  '501',  '701',  '951',  'TPA'
 mat = ['STEEL', 'STEEL']        # 'PEEK',  'PA66',  'STEEL' (20MnCr5),  'ADI'
-## TYPE OF GEAR ###############################################################
+## TYPE OF GEAR ####################################################################
 alpha, beta, m, z, x, b, dsh, Ra, Rq = gears.gtype(gear)
 ## MAAG CALCULATION ##
 mt, pt, pb, pbt, betab, al, r, rl, ra, rb, rf, alpha_t, alpha_tw, epslon_alpha,\
 epslon_a, epslon_beta, epslon_gama, galpha, galphai, Req, u, T1T2, T1A, T2A, \
 AB, AC, AD, AE, rA1, rA2, rB1, rB2, rD1, rD2 = MAAG.calc(alpha, beta, m, z, x, b)
-## LINES OF CONTACT ###########################################################
+## LINES OF CONTACT ################################################################
 size = 1000
 lxi, xx, rr1, rr2 = contact.lines(size, betab, epslon_alpha, epslon_beta, \
                                   epslon_gama, rb, T1A, T2A, AE)
-## OPERATING CONDITIONS #######################################################
+## OPERATING CONDITIONS ############################################################
 Tbulk = 50.
 NL = 1e6
 nmotor = np.array([200., 350., 700., 1050., 1400., 1850.])# rpm 
@@ -26,7 +26,7 @@ else:
 torque = np.array([torqueP, u*torqueP])
 n = np.array([u*nmotor, nmotor])
 omega = np.pi*n/30
-## OIL SELECTION ##############################################################
+## OIL SELECTION ###################################################################
 oil = 'P150'
 Tlub = 80.0
 Tamb = 15.
@@ -36,24 +36,24 @@ if oil == 'dry':
 else:
     mu = 0.0
     rohT, cp_lub, k_lub, beta_lub, piezo, miu, niu, xl, ubb, ubr = oils.astm(oil, Tlub)
-## MATERIAL SELECTION #########################################################
+## MATERIAL SELECTION ##############################################################
 E, v, cpg, kg, rohg, sigmaHlim, sigmaFlim = material.matp(mat, Tbulk, NL)
-## GEAR FORCES ################################################################
+## GEAR FORCES #####################################################################
 Pin, fbt, fbn, ft, fr, fn, fa, fbear, frb, COF = contact.forces\
 (torque, omega, rb, rl, alpha_tw, betab, Req, Ra, xl, miu, lxi, mu, b)
-## HERTZ CONTACT ##############################################################
+## HERTZ CONTACT ###################################################################
 fnx, vt, vri, vr, vg, SRR, Eeff, a, p0, p0p, pm, Reff, pvzpx, pvzp, qvzp1, qvzp2, \
 avg_qvzp1, avg_qvzp2, HVL, bk1, bk2 = contact.hertz(lxi, alpha_tw, betab, AE, T1A, T2A, \
 T1T2, rb, E, omega, r, v, fbn, fbt, xx, rr1, Pin, COF, b, pb, kg, cpg, rohg, Req)
-## BEARINGS ###################################################################
+## BEARINGS ########################################################################
 btype = 'NJ 406'
 fab = 0
 ngears = 4
 Mvl, phi_bl, Msl, Mrr, Mdrag, Grr, Gsl, usl = bearings.pl(btype, frb, fab, n, niu, ubb, ubr)
 pvl = ngears*(Mvl[:,:,0]*omega[0] + Mvl[:,:,1]*omega[1])
-## TOTAL POWER LOSS (EXCLUDING NO-LOAD) #######################################
+## TOTAL POWER LOSS (EXCLUDING NO-LOAD) ############################################
 pv = pvzp + pvl.T
-## PLOT #######################################################################
+## PLOT AND PRINT ##################################################################
 plot.fig(xx, vg, qvzp1, qvzp2, avg_qvzp1, avg_qvzp2, lxi, p0, fnx, load, nmotor)
 print('Gear type:', gear)
 print('Gear material:', mat[0], '/', mat[1])
