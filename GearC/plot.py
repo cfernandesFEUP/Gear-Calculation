@@ -44,3 +44,4 @@ def fig(xx, vg, qvzp1, qvzp2, avg_qvzp1, avg_qvzp2, lxi, p0, fnx, load, nmotor):
     plt.ylabel(r'$\overline{q_{vzp}}\left(x\right)$ / Wm$^{-2}$')
     plt.grid(True)
     plt.title(r'Average heat flux - ' + load[-1]+' / '+str(int(nmotor[-1]))+' rpm')
+    plt.show()
