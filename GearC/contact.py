@@ -43,9 +43,9 @@ def hertz(lxi, alpha_tw, betab, AE, T1A, T2A, T1T2, rb, E, omega, r, v, fbn, \
     fnx = np.outer(1e3*fbn, 1/(lxi*b))
     R = np.array([(T1A + xx*AE),(T2A - xx*AE)])*1e-3
     Eeff = 1/((1 - v[0]**2)/E[0] + (1 - v[1]**2)/E[1])
-    Reff = 2/((1/R[0]) + (1/R[1]))/np.cos(betab)
-    a = np.sqrt((2/np.pi)*fnx*Reff/Eeff)
-    p0 = np.sqrt((2/np.pi)*fnx*(Eeff/Reff))
+    Reff = 1/((1/R[0]) + (1/R[1]))/np.cos(betab)
+    a = np.sqrt((1/np.pi)*fnx*Reff/Eeff)
+    p0 = np.sqrt((1/np.pi)*fnx*(Eeff/Reff))
     vt = np.outer(omega[0],np.sqrt((rb[0]/1000)**2 + R[0]**2))
     vri = np.array([np.outer(omega[0],R[0]), np.outer(omega[1],R[1])])/np.cos(betab)
     term = kg*cpg*rohg
@@ -53,7 +53,9 @@ def hertz(lxi, alpha_tw, betab, AE, T1A, T2A, T1T2, rb, E, omega, r, v, fbn, \
     vtb = omega[0]*rb[0]/1000
     p0p = np.array([np.sqrt((2/np.pi)*max(fnx[i])*(Eeff/(2*Req/1000))) for i in range(len(fbn))])
     vr = (vri[0] + vri[1])/2
-    vg = abs(vri[1] - vri[0])
+    vg = abs(vri[0] - vri[1])
+    gs1 = abs(vri[0] - vri[1])/vri[0]
+    gs2 = abs(vri[0] - vri[1])/vri[1]
     SRR = vg/vr
     pm = fnx/(2*a)
     HVL = np.trapz(fnx[0]*vg[0]/(fbt[0]*vtb[0]), xx*AE/1000)*b/pb
@@ -70,4 +72,4 @@ def hertz(lxi, alpha_tw, betab, AE, T1A, T2A, T1T2, rb, E, omega, r, v, fbn, \
             avg_qvzp1[i,j,:] = qvzp1[i,j,:]*a[i,:]*omega[0,j]/(np.pi*vri[0,j,:])
             avg_qvzp2[i,j,:] = qvzp2[i,j,:]*a[i,:]*omega[1,j]/(np.pi*vri[1,j,:])
     return fnx, vt, vri, vr, vg, SRR, Eeff, a, p0, p0p, pm, Reff, pvzpx, pvzp, \
-    qvzp1, qvzp2, avg_qvzp1, avg_qvzp2, HVL, bk1, bk2
+    qvzp1, qvzp2, avg_qvzp1, avg_qvzp2, HVL, bk1, bk2, gs1, gs2

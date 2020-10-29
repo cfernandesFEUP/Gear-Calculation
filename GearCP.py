@@ -43,7 +43,7 @@ Pin, fbt, fbn, ft, fr, fn, fa, fbear, frb, COF = contact.forces\
 (torque, omega, rb, rl, alpha_tw, betab, Req, Ra, xl, miu, lxi, mu, b)
 ## HERTZ CONTACT ###################################################################
 fnx, vt, vri, vr, vg, SRR, Eeff, a, p0, p0p, pm, Reff, pvzpx, pvzp, qvzp1, qvzp2, \
-avg_qvzp1, avg_qvzp2, HVL, bk1, bk2 = contact.hertz(lxi, alpha_tw, betab, AE, T1A, T2A, \
+avg_qvzp1, avg_qvzp2, HVL, bk1, bk2, gs1, gs2 = contact.hertz(lxi, alpha_tw, betab, AE, T1A, T2A, \
 T1T2, rb, E, omega, r, v, fbn, fbt, xx, rr1, Pin, COF, b, pb, kg, cpg, rohg, Req)
 ## BEARINGS ########################################################################
 btype = 'NJ 406'
