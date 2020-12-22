@@ -30,7 +30,7 @@ def calc(alpha, beta, m, z, x, b):
                     (np.tan(alpha_t) - alpha_t))/np.tan(alpha)) - \
     1/np.cos(beta)*(np.cos(alpha_t)/np.cos(alpha_tw) - 1))
     da = d + 2*m*(haP + x - k)                              # tip diameter
-    df = d - 2*m*(hfP + x)                                  # root diameter
+    df = d + 2*m*(x - hfP)                                  # root diameter
     rb = db/2
     rl = dl/2
     rf = df/2

@@ -61,4 +61,14 @@ def gtype(gear):
         dsh = 30.0
         Ra = np.array([0.5, 0.5])
         Rq = np.array([0.7, 0.7])
+    elif gear == 'RFT':
+        alpha = 20.0 
+        beta = 0.0 
+        m = 1.5
+        z = np.array([176., 264.])
+        x = np.array([-0.005966, 0.01451])
+        b = 7.55
+        dsh = 30.0
+        Ra = np.array([0.5, 0.5])
+        Rq = np.array([0.7, 0.7])
     return alpha, beta, m, z, x, b, dsh, Ra, Rq

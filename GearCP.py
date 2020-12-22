@@ -1,7 +1,7 @@
 import numpy as np
 from GearC import gears, MAAG, contact, LoadStage, oils, material, bearings, plot
 ## GEAR SELECTION ##################################################################
-gear = 'C40'                    # 'C40',  '501',  '701',  '951',  'TPA'
+gear = 'RFT'                    # 'C40',  '501',  '701',  '951',  'TPA'
 mat = ['STEEL', 'STEEL']        # 'PEEK',  'PA66',  'STEEL' (20MnCr5),  'ADI'
 ## TYPE OF GEAR ####################################################################
 alpha, beta, m, z, x, b, dsh, Ra, Rq = gears.gtype(gear)
@@ -18,7 +18,7 @@ Tbulk = 50.
 NL = 1e6
 nmotor = np.array([200., 350., 700., 1050., 1400., 1850.])# rpm 
 arm = '0.35'# '0.35' or '0.5' FZG Load Stages
-load = ['k01','k03','k07','k09']# 'k01' up to 'k14 or pinion torque in Nm
+load = ['k01','k03','k07','k14']# 'k01' up to 'k14 or pinion torque in Nm
 if type(load[0]) is str:
     torqueP = np.array([LoadStage.gtorque(i, arm) for i in load])
 else:
