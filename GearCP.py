@@ -1,7 +1,7 @@
 import numpy as np
 from GearC import gears, MAAG, contact, LoadStage, oils, material, bearings, plot
 ## GEAR SELECTION ##################################################################
-gear = 'RFT'                    # 'C40',  '501',  '701',  '951',  'TPA'
+gear = '501'                    # 'C40',  '501',  '701',  '951',  'TPA'
 mat = ['STEEL', 'STEEL']        # 'PEEK',  'PA66',  'STEEL' (20MnCr5),  'ADI'
 ## TYPE OF GEAR ####################################################################
 alpha, beta, m, z, x, b, dsh, Ra, Rq = gears.gtype(gear)
