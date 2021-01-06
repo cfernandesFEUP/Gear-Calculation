@@ -11,6 +11,16 @@ def gtype(gear):
         dsh = 30.0
         Ra = np.array([0.5, 0.5])
         Rq = np.array([0.7, 0.7])
+    if gear == '2020':
+        alpha = 20.0
+        beta = 0.0
+        m = 4.5
+        z = np.array([20., 20.])
+        x = np.array([0.1766, 0.1766])
+        b = 14.0
+        dsh = 30.0
+        Ra = np.array([0.5, 0.5])
+        Rq = np.array([0.7, 0.7])
     elif gear == 'C40':
         alpha = 20.0
         beta = 0.0
@@ -69,6 +79,16 @@ def gtype(gear):
         x = np.array([-0.005966, 0.01451])
         b = 7.55
         dsh = 30.0
+        Ra = np.array([0.5, 0.5])
+        Rq = np.array([0.7, 0.7])
+    elif gear == 'EEN':
+        alpha = 20.0
+        beta = 0.0
+        m = 1.75
+        z = np.array([38., 57.])
+        x = np.array([0.0, 0.0])
+        b = 20
+        dsh = 20.0
         Ra = np.array([0.5, 0.5])
         Rq = np.array([0.7, 0.7])
     return alpha, beta, m, z, x, b, dsh, Ra, Rq
