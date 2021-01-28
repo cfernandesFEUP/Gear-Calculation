@@ -1,7 +1,7 @@
 import numpy as np
-from GearC import gears, MAAG, contact, LoadStage, oils, material, bearings, plot
+from GearC import gears, MAAG, contact, LoadStage, oils, material, bearings, plot#, ISO
 ## GEAR SELECTION ##################################################################
-gear = '2020'                    # 'C40',  '501',  '701',  '951',  'TPA'
+gear = 'EER'                    # 'C40',  '501',  '701',  '951',  'TPA'
 mat = ['STEEL', 'STEEL']        # 'PEEK',  'PA66',  'STEEL' (20MnCr5),  'ADI'
 ## TYPE OF GEAR ####################################################################
 alpha, beta, m, z, x, b, dsh, Ra, Rq = gears.gtype(gear)
@@ -16,7 +16,7 @@ lxi, xx, rr1, rr2 = contact.lines(size, betab, epslon_alpha, epslon_beta, \
 ## OPERATING CONDITIONS ############################################################
 Tbulk = 50.
 NL = 1e6
-nmotor = np.array([200., 350., 700., 1050., 1400., 1850.])# rpm 
+nmotor = np.array([200., 350., 700., 1050., 1500., 1800.])# rpm 
 arm = '0.35'# '0.35' or '0.5' FZG Load Stages
 load = ['k01','k03','k07','k09']# 'k01' up to 'k14 or pinion torque in Nm
 if type(load[0]) is str:
@@ -53,6 +53,10 @@ Mvl, phi_bl, Msl, Mrr, Mdrag, Grr, Gsl, usl = bearings.pl(btype, frb, fab, n, ni
 pvl = ngears*(Mvl[:,:,0]*omega[0] + Mvl[:,:,1]*omega[1])
 ## TOTAL POWER LOSS (EXCLUDING NO-LOAD) ############################################
 pv = pvzp + pvl.T
+## ISO 6336 + VDI 2736 #############################################################
+# SF, SH = ISO.LCC(ft,b,m,d,u,v,E,rohg,epslon_alpha,epslon_beta,epslon_gama,beta,betab,\
+# alpha,alphat,alpha_tw,n,z1,z2,x1,x2,da,db,df,mat,sigmaHlim,sigmaFlim,niu40,a_l,Rz)
+
 ## PLOT AND PRINT ##################################################################
 plot.fig(xx, vg, qvzp1, qvzp2, avg_qvzp1, avg_qvzp2, lxi, p0, fnx, load, nmotor)
 print('Gear type:', gear)

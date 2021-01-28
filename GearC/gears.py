@@ -91,4 +91,14 @@ def gtype(gear):
         dsh = 20.0
         Ra = np.array([0.5, 0.5])
         Rq = np.array([0.7, 0.7])
+    elif gear == 'EER':
+        alpha = 20.0
+        beta = 0.0
+        m = 1.75
+        z = np.array([28., 42.])
+        x = np.array([0.0, 0.0])
+        b = 20
+        dsh = 20.0
+        Ra = np.array([0.5, 0.5])
+        Rq = np.array([0.7, 0.7])
     return alpha, beta, m, z, x, b, dsh, Ra, Rq
