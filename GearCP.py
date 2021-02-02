@@ -16,7 +16,7 @@ lxi, xx, rr1, rr2 = contact.lines(size, betab, epslon_alpha, epslon_beta, \
 ## OPERATING CONDITIONS ############################################################
 Tbulk = 50.
 NL = 1e6
-nmotor = np.array([200., 350., 700., 1050., 1500., 1800.])# rpm 
+nmotor = np.array([200., 350., 700., 1050., 1500., 2500./1.5])# rpm 
 arm = '0.35'# '0.35' or '0.5' FZG Load Stages
 load = ['k01','k03','k07','k09']# 'k01' up to 'k14 or pinion torque in Nm
 if type(load[0]) is str:
