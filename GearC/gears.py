@@ -104,7 +104,7 @@ def gtype(gear):
     elif gear == 'EER1':
         alpha = 20.0
         beta = 0.0
-        m = 2.#5
+        m = 2.5
         z = np.array([28., 63.])
         x = np.array([0.0, 0.0])
         b = 20
