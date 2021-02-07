@@ -1,10 +1,14 @@
 import numpy as np
-from GearC import gears, MAAG, contact, LoadStage, oils, material, bearings, plot#, ISO
+from GearC import gears,MAAG,contact,LoadStage,oils,material,ISO,bearings,plot
 ## GEAR SELECTION ##################################################################
-gear = 'EER'                    # 'C40',  '501',  '701',  '951',  'TPA'
+gear = 'C14'                    # 'C40',  '501',  '701',  '951',  'TPA'
 mat = ['STEEL', 'STEEL']        # 'PEEK',  'PA66',  'STEEL' (20MnCr5),  'ADI'
+## GEAR FINISHING ##################################################################
+Ra = np.array([0.5, 0.5])
+Rq = np.array([0.7, 0.7])
+Rz = np.array([4.8, 4.8])
 ## TYPE OF GEAR ####################################################################
-alpha, beta, m, z, x, b, dsh, Ra, Rq = gears.gtype(gear)
+alpha, beta, m, z, x, b, dsh = gears.gtype(gear)
 ## MAAG CALCULATION ##
 mt, pt, pb, pbt, betab, al, r, rl, ra, rb, rf, alpha_t, alpha_tw, epslon_alpha,\
 epslon_a, epslon_beta, epslon_gama, galpha, galphai, Req, u, T1T2, T1A, T2A, \
@@ -53,12 +57,12 @@ Mvl, phi_bl, Msl, Mrr, Mdrag, Grr, Gsl, usl = bearings.pl(btype, frb, fab, n, ni
 pvl = ngears*(Mvl[:,:,0]*omega[0] + Mvl[:,:,1]*omega[1])
 ## TOTAL POWER LOSS (EXCLUDING NO-LOAD) ############################################
 pv = pvzp + pvl.T
-## ISO 6336 + VDI 2736 #############################################################
-# SF, SH = ISO.LCC(ft,b,m,d,u,v,E,rohg,epslon_alpha,epslon_beta,epslon_gama,beta,betab,\
-# alpha,alphat,alpha_tw,n,z1,z2,x1,x2,da,db,df,mat,sigmaHlim,sigmaFlim,niu40,a_l,Rz)
-
-## PLOT AND PRINT ##################################################################
+## PLOT ############################################################################
 plot.fig(xx, vg, qvzp1, qvzp2, avg_qvzp1, avg_qvzp2, lxi, p0, fnx, load, nmotor)
+## ISO 6336/DIN 3990 + VDI 2736 ####################################################
+SF, SFmin, SH, SHmin = ISO.LCC(ft,z,b,m,x,r,ra,rb,rf,betab,alpha,alpha_t,alpha_tw,u,v,\
+E,rohg,epslon_alpha,epslon_beta,epslon_gama,beta,n,mat,sigmaHlim,sigmaFlim,oil,al,Rz)
+## PRINT ###########################################################################
 print('Gear type:', gear)
 print('Gear material:', mat[0], '/', mat[1])
 print('Presure angle (\u03B1):', "%.1f" % alpha)
