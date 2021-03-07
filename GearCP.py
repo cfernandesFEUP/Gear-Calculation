@@ -1,7 +1,7 @@
 import numpy as np
-from GearC import gears,MAAG,contact,LoadStage,oils,material,ISO,bearings,plot
+from GearC import gears,MAAG,contact,LoadStage,oils,material,ISO6336,bearings,plot
 ## GEAR SELECTION ##################################################################
-gear = 'C14'                    # 'C40',  '501',  '701',  '951',  'TPA'
+gear = 'RF2'                    # 'C40',  '501',  '701',  '951',  'TPA'
 mat = ['STEEL', 'STEEL']        # 'PEEK',  'PA66',  'STEEL' (20MnCr5),  'ADI'
 ## GEAR FINISHING ##################################################################
 Ra = np.array([0.5, 0.5])
@@ -20,7 +20,7 @@ lxi, xx, rr1, rr2 = contact.lines(size, betab, epslon_alpha, epslon_beta, \
 ## OPERATING CONDITIONS ############################################################
 Tbulk = 50.
 NL = 1e6
-nmotor = np.array([200., 350., 700., 1050., 1500., 2500./1.5])# rpm 
+nmotor = np.array([200., 350., 700., 1050., 1500., 2500.])# rpm 
 arm = '0.35'# '0.35' or '0.5' FZG Load Stages
 load = ['k01','k03','k07','k09']# 'k01' up to 'k14 or pinion torque in Nm
 if type(load[0]) is str:
@@ -60,7 +60,7 @@ pv = pvzp + pvl.T
 ## PLOT ############################################################################
 plot.fig(xx, vg, qvzp1, qvzp2, avg_qvzp1, avg_qvzp2, lxi, p0, fnx, load, nmotor)
 ## ISO 6336/DIN 3990 + VDI 2736 ####################################################
-SF, SFmin, SH, SHmin = ISO.LCC(ft,z,b,m,x,r,ra,rb,rf,betab,alpha,alpha_t,alpha_tw,u,v,\
+SF, SFmin, SH, SHmin = ISO6336.LCC(ft,z,b,m,x,r,ra,rb,rf,betab,alpha,alpha_t,alpha_tw,u,v,\
 E,rohg,epslon_alpha,epslon_beta,epslon_gama,beta,n,mat,sigmaHlim,sigmaFlim,oil,al,Rz)
 ## PRINT ###########################################################################
 print('Gear type:', gear)
