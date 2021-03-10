@@ -1,7 +1,7 @@
 import numpy as np
 from GearC import gears,MAAG,contact,LoadStage,oils,material,ISO6336,bearings,plot
 ## GEAR SELECTION ##################################################################
-gear = 'RF2'                    # 'C40',  '501',  '701',  '951',  'TPA'
+gear = 'RF3'                    # 'C40',  '501',  '701',  '951',  'TPA'
 mat = ['STEEL', 'STEEL']        # 'PEEK',  'PA66',  'STEEL' (20MnCr5),  'ADI'
 ## GEAR FINISHING ##################################################################
 Ra = np.array([0.5, 0.5])
