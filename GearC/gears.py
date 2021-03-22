@@ -97,6 +97,14 @@ def gtype(gear):
         x = np.array([0.3546, 0.9169])
         b = 12
         dsh = 20.0
+    elif gear == 'EEE':
+        alpha = 20.0
+        beta = 0.0
+        m = 2
+        z = np.array([28., 56.])
+        x = np.array([0.0, 0.0])
+        b = 20
+        dsh = 20.0
     elif gear == 'RF2':
         alpha = 20.0
         beta = 0.0

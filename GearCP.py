@@ -1,7 +1,7 @@
 import numpy as np
 from GearC import gears,MAAG,contact,LoadStage,oils,material,ISO6336,bearings,plot
 ## GEAR SELECTION ##################################################################
-gear = 'RF3'                    # 'C40',  '501',  '701',  '951',  'TPA'
+gear = '951'                    # 'C40',  '501',  '701',  '951',  'TPA'
 mat = ['STEEL', 'STEEL']        # 'PEEK',  'PA66',  'STEEL' (20MnCr5),  'ADI'
 ## GEAR FINISHING ##################################################################
 Ra = np.array([0.5, 0.5])
@@ -14,9 +14,10 @@ mt, pt, pb, pbt, betab, al, r, rl, ra, rb, rf, alpha_t, alpha_tw, epslon_alpha,\
 epslon_a, epslon_beta, epslon_gama, galpha, galphai, Req, u, T1T2, T1A, T2A, \
 AB, AC, AD, AE, rA1, rA2, rB1, rB2, rD1, rD2 = MAAG.calc(alpha, beta, m, z, x, b)
 ## LINES OF CONTACT ################################################################
-size = 1000
-lxi, xx, rr1, rr2 = contact.lines(size, betab, epslon_alpha, epslon_beta, \
-                                  epslon_gama, rb, T1A, T2A, AE)
+size = 100
+
+lxi, lsum, li, xx, bpos, rr1, rr2 = contact.lines(size, b, pbt, betab, \
+                epslon_alpha, epslon_beta, epslon_gama, rb, T1A, T2A, AE)
 ## OPERATING CONDITIONS ############################################################
 Tbulk = 50.
 NL = 1e6
@@ -47,8 +48,9 @@ Pin, fbt, fbn, ft, fr, fn, fa, fbear, frb, COF = contact.forces\
 (torque, omega, rb, rl, alpha_tw, betab, Req, Ra, xl, miu, lxi, mu, b)
 ## HERTZ CONTACT ###################################################################
 fnx, vt, vri, vr, vg, SRR, Eeff, a, p0, p0p, pm, Reff, pvzpx, pvzp, qvzp1, qvzp2, \
-avg_qvzp1, avg_qvzp2, HVL, bk1, bk2, gs1, gs2 = contact.hertz(lxi, alpha_tw, betab, AE, T1A, T2A, \
-T1T2, rb, E, omega, r, v, fbn, fbt, xx, rr1, Pin, COF, b, pb, kg, cpg, rohg, Req)
+avg_qvzp1, avg_qvzp2, HVL, bk1, bk2, gs1, gs2 = contact.hertz(lxi, lsum, bpos, alpha_tw, \
+betab, AE, T1A, T2A, T1T2, rb, E, omega, r, v, fbn, fbt, xx, rr1, Pin, COF, b, pbt, \
+    kg, cpg, rohg, Req)
 ## BEARINGS ########################################################################
 btype = 'NJ 406'
 fab = 0
@@ -101,9 +103,15 @@ print('Normal load F_n [N]:\n', fn)
 print('Axial load F_a [N]:\n', fa)
 print('Bearings load (equal distance) F_bearings [N]:\n', fbear)
 np.set_printoptions(precision=2)
-print('Maximum Hertzian Contact Pressure p_0 [GPa]:\n', \
-      np.array([max(p0[i])/1e9 for i in range(len(fbn))]))
-print('Hertzian Contact Pressure Pitch Point p_0 [GPa]:\n', p0p/1e9)
+print('Maximum Hertzian Contact Pressure p_0 [MPa]:\n', \
+       np.array([max(p0[0,:,i])/1e6 for i in range(len(fbn))]))
+print('Hertzian Contact Pressure Pitch Point p_0 [GPa]:\n', p0p/1e6)
+print('Maximum shear stress [MPa]:\n', \
+      np.array([max(0.3*p0[0,:,i])/1e6 for i in range(len(fbn))]))
+print('Maximum octaedric shear stress [MPa]:\n',\
+      np.array([max(0.272*p0[0,:,i])/1e6 for i in range(len(fbn))]))
+print('Location of maximum equivalent stress [\u03BCm]:\n', \
+      np.array([min(0.7861*a[0,:,i]*1e6) for i in range(len(fbn))]))
 print('Oil temperature Tlub [\u00b0C]:',"%.1f" % Tlub)
 print('Dynamic Viscosity \u03B7 [mPas]:',"%.2f" % miu)
 print('Kinematic Viscosity \u03BD [cSt]:',"%.2f" % niu)
