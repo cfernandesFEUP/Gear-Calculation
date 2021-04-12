@@ -1,7 +1,7 @@
 import numpy as np
 from GearC import gears,MAAG,contact,LoadStage,oils,material,ISO6336,bearings,plot
 ## GEAR SELECTION ##################################################################
-gear = '951'                    # 'C40',  '501',  '701',  '951',  'TPA'
+gear = 'C14'                    # 'C40',  '501',  '701',  '951',  'TPA'
 mat = ['STEEL', 'STEEL']        # 'PEEK',  'PA66',  'STEEL' (20MnCr5),  'ADI'
 ## GEAR FINISHING ##################################################################
 Ra = np.array([0.5, 0.5])
@@ -21,7 +21,7 @@ lxi, lsum, li, xx, bpos, rr1, rr2 = contact.lines(size, b, pbt, betab, \
 ## OPERATING CONDITIONS ############################################################
 Tbulk = 50.
 NL = 1e6
-nmotor = np.array([200., 350., 700., 1050., 1500., 2500.])# rpm 
+nmotor = np.array([200., 350., 700., 1050., 1500., 1000.])# rpm 
 arm = '0.35'# '0.35' or '0.5' FZG Load Stages
 load = ['k01','k03','k07','k09']# 'k01' up to 'k14 or pinion torque in Nm
 if type(load[0]) is str:
