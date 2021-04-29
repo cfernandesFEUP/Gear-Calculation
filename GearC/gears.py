@@ -57,68 +57,12 @@ def gtype(gear):
         x = np.array([0.8532, -0.5])
         b = 10.0
         dsh = 30.0
-    elif gear == 'RFT':
-        alpha = 20.0 
-        beta = 0.0 
-        m = 1.5
-        z = np.array([176., 264.])
-        x = np.array([-0.005966, 0.01451])
-        b = 7.55
-        dsh = 30.0
-    elif gear == 'EEN':
-        alpha = 20.0
-        beta = 0.0
-        m = 1.75
-        z = np.array([38., 57.])
-        x = np.array([0.0, 0.0])
-        b = 20
-        dsh = 20.0
-    elif gear == 'EER':
-        alpha = 20.0
-        beta = 0.0
-        m = 2.5
-        z = np.array([28., 42.])
-        x = np.array([0.0, 0.0])
-        b = 20
-        dsh = 20.0
-    elif gear == 'EER1':
-        alpha = 20.0
-        beta = 0.0
-        m = 2.5
-        z = np.array([28., 63.])
-        x = np.array([0.0, 0.0])
-        b = 20
-        dsh = 20.0
-    elif gear == 'RF1':
-        alpha = 20.0
-        beta = 0.0
-        m = 1.25
-        z = np.array([32., 112.])
-        x = np.array([0.3546, 0.9169])
-        b = 12
-        dsh = 20.0
     elif gear == 'EEE':
         alpha = 20.0
         beta = 0.0
         m = 2
-        z = np.array([28., 56.])
+        z = np.array([18., 57.])
         x = np.array([0.0, 0.0])
         b = 20
-        dsh = 20.0
-    elif gear == 'RF2':
-        alpha = 20.0
-        beta = 0.0
-        m = 1.125
-        z = np.array([84., 126.])
-        x = np.array([0.7621, 0.9993])
-        b = 11
-        dsh = 20.0
-    elif gear == 'RF3':
-        alpha = 20.0
-        beta = 0.0
-        m = 2
-        z = np.array([20., 70.])
-        x = np.array([0.2474, 0.5203])
-        b = 12
         dsh = 20.0
     return alpha, beta, m, z, x, b, dsh
