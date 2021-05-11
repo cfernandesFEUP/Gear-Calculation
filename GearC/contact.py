@@ -1,4 +1,5 @@
 import numpy as np
+import time
 ## GEAR FORCES AND POWER LOSS #################################################
 def forces(torque, omega, rb, rl, alpha_tw, betab, Req, Ra, xl, miu, lxi, mu, b):
     Pin = np.outer(omega[0],torque[0])
@@ -20,6 +21,7 @@ def forces(torque, omega, rb, rl, alpha_tw, betab, Req, Ra, xl, miu, lxi, mu, b)
     return Pin, fbt, fbn, ft, fr, fn, fa, fbear, frb, COF
 ## LINES OF CONTACT ###########################################################
 def lines(size, b, pbt, betab, epslon_alpha, epslon_beta, epslon_gama, rb, T1A, T2A, AE):
+    tic = time.perf_counter()
     xx = np.linspace(0., (epslon_alpha+epslon_beta)*pbt, size)
     bpos = np.linspace(0, b, len(xx))
     li = np.zeros([len(xx),len(bpos)])
@@ -55,6 +57,8 @@ def lines(size, b, pbt, betab, epslon_alpha, epslon_beta, epslon_gama, rb, T1A, 
     lxi = lsum[0]/b
     rr1 = np.sqrt((xx*AE + T1A)**2 + rb[0]**2)
     rr2 = np.sqrt((T2A - xx*AE)**2 + rb[1]**2)
+    toc = time.perf_counter()
+    print(f"Downloaded the tutorial in {toc - tic:0.4f} seconds")
     return lxi, lsum, li, x_f, bpos, rr1, rr2
 ## HERTZIAN CONTACT ###########################################################
 def hertz(lxi, lsum, bpos, alpha_tw, betab, AE, T1A, T2A, T1T2, rb, E, omega, r, v, \

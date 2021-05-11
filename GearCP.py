@@ -3,7 +3,7 @@ sys.dont_write_bytecode = True
 import numpy as np
 from GearC import gears,MAAG,contact,LoadStage,oils,material,ISO6336,bearings,plot
 ## GEAR SELECTION ##################################################################
-gear = 'EEE'                    # 'C40',  '501',  '701',  '951',  'TPA'
+gear = 'C14'                    # 'C40',  '501',  '701',  '951',  'TPA'
 mat = ['STEEL', 'STEEL']        # 'PEEK',  'PA66',  'STEEL' (20MnCr5),  'ADI'
 ## GEAR FINISHING ##################################################################
 Ra = np.array([0.6, 0.6])
@@ -23,8 +23,8 @@ lxi, lsum, li, xx, bpos, rr1, rr2 = contact.lines(size, b, pbt, betab, \
 Tbulk = 50.
 NL = 1e6
 nmotor = np.array([200., 350., 700., 1050., 1500./u, 1750])# rpm 
+load = ['k01','k03','k07','k09'] # 'k01' up to 'k14 or pinion torque in Nm
 arm = '0.35'# '0.35' or '0.5' FZG Load Stages
-load = [130*u]#['k01','k03','k07','k09']# 'k01' up to 'k14 or pinion torque in Nm
 if type(load[0]) is str:
     torqueP = np.array([LoadStage.gtorque(i, arm) for i in load]) 
 else:
@@ -105,7 +105,7 @@ print('Axial load F_a [N]:\n', fa)
 print('Bearings load (equal distance) F_bearings [N]:\n', fbear)
 np.set_printoptions(precision=2)
 print('Maximum Hertzian Contact Pressure p_0 [MPa]:\n', \
-       np.array([max(p0[0,:,i])/1e6 for i in range(len(fbn))]))
+        np.array([max(p0[0,:,i])/1e6 for i in range(len(fbn))]))
 print('Hertzian Contact Pressure Pitch Point p_0 [GPa]:\n', p0p/1e6)
 print('Maximum shear stress [MPa]:\n', \
       np.array([max(0.3*p0[0,:,i])/1e6 for i in range(len(fbn))]))

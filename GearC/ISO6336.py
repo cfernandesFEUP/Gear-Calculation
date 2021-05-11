@@ -14,7 +14,6 @@ def LCC(ft,z,b,m,x,r,ra,rb,rf,betab,alpha,alpha_t,alpha_tw,u,v,E,rohg,\
     KA = 1.00
     zn1 = z[0] / (np.cos(betab) ** 2 * np.cos(beta * np.pi / 180))
     zn2 = z[1] / (np.cos(betab) ** 2 * np.cos(beta * np.pi / 180))
-    print(zn1)
     C1 = 0.04723
     C2 = 0.15551
     C3 = 0.25791
