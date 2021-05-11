@@ -17,8 +17,8 @@ epslon_a, epslon_beta, epslon_gama, galpha, galphai, Req, u, T1T2, T1A, T2A, \
 AB, AC, AD, AE, rA1, rA2, rB1, rB2, rD1, rD2 = MAAG.calc(alpha, beta, m, z, x, b)
 ## LINES OF CONTACT ################################################################
 size = 100
-lxi, lsum, li, xx, bpos, rr1, rr2 = contact.lines(size, b, pbt, betab, \
-                epslon_alpha, epslon_beta, epslon_gama, rb, T1A, T2A, AE)
+lxi, lsum, li, xx, bpos, rr1, rr2 = contact.lines(size, b, pbt, betab,\
+epslon_alpha, epslon_beta, epslon_gama, rb, T1A, T2A, AE)
 ## OPERATING CONDITIONS ############################################################
 Tbulk = 50.
 NL = 1e6

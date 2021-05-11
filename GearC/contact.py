@@ -1,5 +1,4 @@
 import numpy as np
-import time
 ## GEAR FORCES AND POWER LOSS #################################################
 def forces(torque, omega, rb, rl, alpha_tw, betab, Req, Ra, xl, miu, lxi, mu, b):
     Pin = np.outer(omega[0],torque[0])
@@ -21,8 +20,11 @@ def forces(torque, omega, rb, rl, alpha_tw, betab, Req, Ra, xl, miu, lxi, mu, b)
     return Pin, fbt, fbn, ft, fr, fn, fa, fbear, frb, COF
 ## LINES OF CONTACT ###########################################################
 def lines(size, b, pbt, betab, epslon_alpha, epslon_beta, epslon_gama, rb, T1A, T2A, AE):
-    tic = time.perf_counter()
-    xx = np.linspace(0., (epslon_alpha+epslon_beta)*pbt, size)
+    COND_A = b*np.tan(betab)
+    COND_B = epslon_alpha*pbt
+    COND_C = epslon_beta*pbt
+    COND_D = (epslon_alpha+epslon_beta)*pbt
+    xx = np.linspace(0., COND_D, size)
     bpos = np.linspace(0, b, len(xx))
     li = np.zeros([len(xx),len(bpos)])
     N = int(np.ceil(epslon_alpha+epslon_beta))
@@ -34,31 +36,27 @@ def lines(size, b, pbt, betab, epslon_alpha, epslon_beta, epslon_gama, rb, T1A, 
         for s in range(len(k)):
             for j in range(len(xx)):
                 xf = xx[j] + k[s]*pbt + bposi
-                if epslon_beta < 1:
-                    if xf >= 0 and xf < b*np.tan(betab):
-                        Lh[s,j] = xf/np.sin(betab)
-                    elif xf >= b*np.tan(betab) and xf < epslon_alpha*pbt:
-                        Lh[s,j] = (b/np.cos(betab))
-                    elif xf >= epslon_alpha*pbt and xf < (epslon_alpha+epslon_beta)*pbt:
-                        Lh[s,j] = b/np.cos(betab)-(xf-epslon_alpha*pbt)/np.sin(betab)
-                else:
-                    if xf >= 0 and xf < epslon_alpha*pbt:
-                        Lh[s,j] = xf/np.sin(betab)
-                    if xf >= epslon_alpha*pbt and xf<epslon_beta*pbt:
-                        Lh[s,j] = epslon_alpha*pbt/np.sin(betab)
-                    if xf >= epslon_beta*pbt and xf < (epslon_alpha+epslon_beta)*pbt:
-                        Lh[s,j] = epslon_alpha*pbt/np.sin(betab)-(xf-epslon_beta*pbt)/np.sin(betab)
-        L[i,:] = sum(Lh)
+                if (epslon_beta < 1) and (xf >= 0) and (xf < COND_A):
+                    Lh[s,j] = xf/np.sin(betab)
+                elif (epslon_beta < 1) and (xf >= COND_A) and (xf < COND_B):
+                    Lh[s,j] = b/np.cos(betab)
+                elif (epslon_beta < 1) and (xf >= COND_B) and (xf < COND_D):
+                    Lh[s,j] = b/np.cos(betab) - (xf - COND_B)/np.sin(betab)
+                elif (epslon_beta >= 1) and (xf >= 0) and (xf < COND_B):
+                    Lh[s,j] = xf/np.sin(betab)
+                elif (epslon_beta >= 1) and (xf >= COND_B) and (xf < COND_C):
+                    Lh[s,j] = COND_B/np.sin(betab)
+                elif (epslon_beta >= 1) and (xf >= COND_C) and (xf < COND_D):
+                    Lh[s,j] = COND_B/np.sin(betab) - (xf - COND_C)/np.sin(betab)
+        L[i,:] = np.sum(Lh,axis=0)
         li[i,:] = Lh[3,:]
-    C1 = xx < epslon_alpha*pbt
-    x_f = xx[C1]/(epslon_alpha*pbt)
+    C1 = xx < COND_B
+    x_f = xx[C1]/COND_B
     lsum = L[:,C1]
     li = li[:,C1]
     lxi = lsum[0]/b
     rr1 = np.sqrt((xx*AE + T1A)**2 + rb[0]**2)
     rr2 = np.sqrt((T2A - xx*AE)**2 + rb[1]**2)
-    toc = time.perf_counter()
-    print(f"Downloaded the tutorial in {toc - tic:0.4f} seconds")
     return lxi, lsum, li, x_f, bpos, rr1, rr2
 ## HERTZIAN CONTACT ###########################################################
 def hertz(lxi, lsum, bpos, alpha_tw, betab, AE, T1A, T2A, T1T2, rb, E, omega, r, v, \
