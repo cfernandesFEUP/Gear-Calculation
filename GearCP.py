@@ -6,7 +6,7 @@ from GearC import gears,MAAG,contact,LoadStage,oils,material,ISO6336,bearings,pl
 gear = 'EEE'                    # 'C40',  '501',  '701',  '951',  'TPA'
 mat = ['STEEL', 'STEEL']        # 'PEEK',  'PA66',  'STEEL' (20MnCr5),  'ADI'
 ## GEAR FINISHING ##################################################################
-Ra = np.array([0.5, 0.5])
+Ra = np.array([0.6, 0.6])
 Rq = np.array([0.7, 0.7])
 Rz = np.array([4.8, 4.8])
 ## TYPE OF GEAR ####################################################################
@@ -17,17 +17,16 @@ epslon_a, epslon_beta, epslon_gama, galpha, galphai, Req, u, T1T2, T1A, T2A, \
 AB, AC, AD, AE, rA1, rA2, rB1, rB2, rD1, rD2 = MAAG.calc(alpha, beta, m, z, x, b)
 ## LINES OF CONTACT ################################################################
 size = 100
-
 lxi, lsum, li, xx, bpos, rr1, rr2 = contact.lines(size, b, pbt, betab, \
                 epslon_alpha, epslon_beta, epslon_gama, rb, T1A, T2A, AE)
 ## OPERATING CONDITIONS ############################################################
 Tbulk = 50.
 NL = 1e6
-nmotor = np.array([200., 350., 700., 1050., 1500., 2000./u])# rpm 
+nmotor = np.array([200., 350., 700., 1050., 1500./u, 1750])# rpm 
 arm = '0.35'# '0.35' or '0.5' FZG Load Stages
-load = ['k01','k03','k07','k09']# 'k01' up to 'k14 or pinion torque in Nm
+load = [130*u]#['k01','k03','k07','k09']# 'k01' up to 'k14 or pinion torque in Nm
 if type(load[0]) is str:
-    torqueP = np.array([LoadStage.gtorque(i, arm) for i in load])
+    torqueP = np.array([LoadStage.gtorque(i, arm) for i in load]) 
 else:
     torqueP = np.array(load)
 torque = np.array([torqueP, u*torqueP])
@@ -49,7 +48,7 @@ E, v, cpg, kg, rohg, sigmaHlim, sigmaFlim = material.matp(mat, Tbulk, NL)
 Pin, fbt, fbn, ft, fr, fn, fa, fbear, frb, COF = contact.forces\
 (torque, omega, rb, rl, alpha_tw, betab, Req, Ra, xl, miu, lxi, mu, b)
 ## HERTZ CONTACT ###################################################################
-fnx, vt, vri, vr, vg, SRR, Eeff, a, p0, p0p, pm, Reff, pvzpx, pvzp, qvzp1, qvzp2, \
+fnx, vt, vri, vr, vg, SRR, Eeff, a, p0, p0p, pm, Reff, pvzpx, fax, pvzp, qvzp1, qvzp2, \
 avg_qvzp1, avg_qvzp2, HVL, bk1, bk2, gs1, gs2 = contact.hertz(lxi, lsum, bpos, alpha_tw, \
 betab, AE, T1A, T2A, T1T2, rb, E, omega, r, v, fbn, fbt, xx, rr1, Pin, COF, b, pbt, \
     kg, cpg, rohg, Req)

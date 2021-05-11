@@ -90,13 +90,14 @@ def hertz(lxi, lsum, bpos, alpha_tw, betab, AE, T1A, T2A, T1T2, rb, E, omega, r,
     gama = 0.95
     bk1 = beta[0]/(beta[0] + beta[1])
     bk2 = beta[1]/(beta[0] + beta[1])
-    pvzpx, qvzp1, qvzp2, avg_qvzp1, avg_qvzp2 = [np.zeros((len(xx),len(fbn), len(omega[0]))) for _ in range(5)]
+    pvzpx, fax, qvzp1, qvzp2, avg_qvzp1, avg_qvzp2 = [np.zeros((len(xx),len(fbn), len(omega[0]))) for _ in range(6)]
     for i in range(len(fbn)):
         for j in range(len(omega[0])):
             pvzpx[:,i,j] = fnx[0,:,i]*vg[j,:]*COF[i,j]
+            fax[:,i,j] = fnx[0,:,i]*COF[i,j]
             qvzp1[:,i,j] = gama*bk1[i,:]*pm[0,:,i]*COF[i,j]*vg[j,:]
             qvzp2[:,i,j] = gama*bk2[i,:]*pm[0,:,i]*COF[i,j]*vg[j,:]
             avg_qvzp1[:,i,j] = qvzp1[:,i,j]*a[0,:,i]*omega[0,j]/(np.pi*vri[0,j,:])
             avg_qvzp2[:,i,j] = qvzp2[:,i,j]*a[0,:,i]*omega[1,j]/(np.pi*vri[1,j,:])
-    return fnx, vt, vri, vr, vg, SRR, Eeff, a, p0, p0p, pm, Reff, pvzpx, pvzp, \
-    qvzp1, qvzp2, avg_qvzp1, avg_qvzp2, HVL, bk1, bk2, gs1, gs2
+    return fnx, vt, vri, vr, vg, SRR, Eeff, a, p0, p0p, pm, Reff, pvzpx, fax, \
+        pvzp, qvzp1, qvzp2, avg_qvzp1, avg_qvzp2, HVL, bk1, bk2, gs1, gs2
