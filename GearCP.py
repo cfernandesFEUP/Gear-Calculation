@@ -4,7 +4,7 @@ import numpy as np
 import time
 tt = time.time()
 ## GEAR SELECTION ##################################################################
-gear = 'C14'                    # 'C40',  '501',  '701',  '951',  'TPA'
+gear = '951'                    # 'C40',  '501',  '701',  '951',  'TPA'
 mat = ['STEEL', 'STEEL']        # 'PEEK',  'PA66',  'STEEL' (20MnCr5),  'ADI'
 ## GEAR FINISHING ##################################################################
 Ra = np.array([0.6, 0.6])
@@ -19,7 +19,7 @@ mt, pt, pb, pbt, betab, al, r, rl, ra, rb, rf, alpha_t, alpha_tw, epslon_alpha,\
 epslon_a, epslon_beta, epslon_gama, galpha, galphai, Req, u, T1T2, T1A, T2A, \
 AB, AC, AD, AE, rA1, rA2, rB1, rB2, rD1, rD2 = MAAG.calc(alpha, beta, m, z, x, b)
 ## LINES OF CONTACT ################################################################
-size = 5000
+size = 1000
 from GearC import contact
 Lh, L, lxi, lsum, xx, bpos, rr1, rr2 = contact.lines(size, b, pbt, betab,\
 epslon_alpha, epslon_beta, epslon_gama, rb, T1A, T2A, AE)
@@ -70,6 +70,7 @@ Mvl, phi_bl, Msl, Mrr, Mdrag, Grr, Gsl, usl = bearings.pl(btype, frb, fab, n, ni
 pvl = ngears*(Mvl[:,:,0]*omega[0] + Mvl[:,:,1]*omega[1])
 ## TOTAL POWER LOSS (EXCLUDING NO-LOAD) ############################################
 pv = pvzp + pvl.T
+print('TIME TOTAL', time.time() - tt) 
 ## PLOT ############################################################################
 from GearC import plot
 plot.fig(xx, vg, qvzp1, qvzp2, avg_qvzp1, avg_qvzp2, lxi, p0, fnx, load, nmotor)
@@ -136,4 +137,4 @@ np.set_printoptions(precision=1)
 print('Gear power loss - Pvzp [W]: SPEED x LOAD\n', pvzp)
 print('Bearing power loss - Pvl [W]: SPEED x LOAD\n', pvl)
 print('Total power loss (excluding no-laod gear losses) Pv [W]: SPEED x LOAD\n', pv)
-print('TIME TOTAL', time.time() - tt)    
+   

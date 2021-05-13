@@ -49,6 +49,14 @@ def gtype(gear):
         x = np.array([1.6915, 2.0003])
         b = 21.2418
         dsh = 30.0
+    elif gear == 'M951':
+        alpha = 20.0
+        beta = 15.0
+        m = 1.75
+        z = np.array([38., 57.])
+        x = np.array([1.5409, 2.1509])
+        b = 21.2418
+        dsh = 30.0
     elif gear == 'TPA':
         alpha = 20.0 
         beta = 0.0 

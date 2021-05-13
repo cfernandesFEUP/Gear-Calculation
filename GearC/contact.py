@@ -47,18 +47,16 @@ def lines(size, b, pbt, betab, epslon_alpha, epslon_beta, epslon_gama, rb, T1A, 
         indA = np.where((XC >= 0)*(XC < COND_A))
         indB = np.where((XC >= COND_A)*(XC < COND_B))
         indC = np.where((XC >= COND_B)*(XC < COND_D))
-        Lh[indA[0],indA[1],indA[2]] = XC[indA[0],indA[1],indA[2]]/np.sin(betab)
-        Lh[indB[0],indB[1],indB[2]] = b/np.cos(betab)
-        Lh[indC[0],indC[1],indC[2]] = b/np.cos(betab) - \
-            (XC[indC[0],indC[1],indC[2]] - COND_B)/np.sin(betab)
+        Lh[indA] = XC[indA]/np.sin(betab)
+        Lh[indB] = b/np.cos(betab)
+        Lh[indC] = b/np.cos(betab) - (XC[indC] - COND_B)/np.sin(betab)
     else:
         indA = np.where((XC >= 0)*(XC < COND_B))
         indB = np.where((XC >= COND_B)*(XC < COND_C))
         indC = np.where((XC >= COND_C)*(XC < COND_D))
-        Lh[indA[0],indA[1],indA[2]] = XC[indA[0],indA[1],indA[2]]/np.sin(betab)
-        Lh[indB[0],indB[1],indB[2]] = COND_B/np.sin(betab)
-        Lh[indC[0],indC[1],indC[2]] = COND_B/np.sin(betab) - \
-            (XC[indC[0],indC[1],indC[2]] - COND_C)/np.sin(betab)
+        Lh[indA] = XC[indA]/np.sin(betab)
+        Lh[indB] = COND_B/np.sin(betab)
+        Lh[indC] = COND_B/np.sin(betab) - (XC[indC] - COND_C)/np.sin(betab)
     print('TIME LOOP2', time.time() - t)
     ## CUT THE ARRAYS OVER THE PATH OF CONTACT
     L = np.sum(Lh,axis=0)
