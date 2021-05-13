@@ -1,7 +1,8 @@
 import sys
 sys.dont_write_bytecode = True
 import numpy as np
-from GearC import gears,MAAG,contact,LoadStage,oils,material,ISO6336,bearings,plot
+import time
+tt = time.time()
 ## GEAR SELECTION ##################################################################
 gear = 'C14'                    # 'C40',  '501',  '701',  '951',  'TPA'
 mat = ['STEEL', 'STEEL']        # 'PEEK',  'PA66',  'STEEL' (20MnCr5),  'ADI'
@@ -10,19 +11,23 @@ Ra = np.array([0.6, 0.6])
 Rq = np.array([0.7, 0.7])
 Rz = np.array([4.8, 4.8])
 ## TYPE OF GEAR ####################################################################
+from GearC import gears
 alpha, beta, m, z, x, b, dsh = gears.gtype(gear)
 ## MAAG CALCULATION ##
+from GearC import MAAG
 mt, pt, pb, pbt, betab, al, r, rl, ra, rb, rf, alpha_t, alpha_tw, epslon_alpha,\
 epslon_a, epslon_beta, epslon_gama, galpha, galphai, Req, u, T1T2, T1A, T2A, \
 AB, AC, AD, AE, rA1, rA2, rB1, rB2, rD1, rD2 = MAAG.calc(alpha, beta, m, z, x, b)
 ## LINES OF CONTACT ################################################################
-size = 100
-lxi, lsum, li, xx, bpos, rr1, rr2 = contact.lines(size, b, pbt, betab,\
+size = 5000
+from GearC import contact
+Lh, L, lxi, lsum, xx, bpos, rr1, rr2 = contact.lines(size, b, pbt, betab,\
 epslon_alpha, epslon_beta, epslon_gama, rb, T1A, T2A, AE)
 ## OPERATING CONDITIONS ############################################################
+from GearC import LoadStage
 Tbulk = 50.
 NL = 1e6
-nmotor = np.array([200., 350., 700., 1050., 1500./u, 1750])# rpm 
+nmotor = np.array([200., 350., 700., 1050., 1500., 1750.])# rpm 
 load = ['k01','k03','k07','k09'] # 'k01' up to 'k14 or pinion torque in Nm
 arm = '0.35'# '0.35' or '0.5' FZG Load Stages
 if type(load[0]) is str:
@@ -33,6 +38,7 @@ torque = np.array([torqueP, u*torqueP])
 n = np.array([u*nmotor, nmotor])
 omega = np.pi*n/30
 ## OIL SELECTION ###################################################################
+from GearC import oils
 oil = 'P150'
 Tlub = 80.0
 Tamb = 15.
@@ -43,16 +49,20 @@ else:
     mu = 0.0
     rohT, cp_lub, k_lub, beta_lub, piezo, miu, niu, xl, ubb, ubr = oils.astm(oil, Tlub)
 ## MATERIAL SELECTION ##############################################################
+from GearC import material
 E, v, cpg, kg, rohg, sigmaHlim, sigmaFlim = material.matp(mat, Tbulk, NL)
 ## GEAR FORCES #####################################################################
 Pin, fbt, fbn, ft, fr, fn, fa, fbear, frb, COF = contact.forces\
 (torque, omega, rb, rl, alpha_tw, betab, Req, Ra, xl, miu, lxi, mu, b)
 ## HERTZ CONTACT ###################################################################
+t = time.time()
 fnx, vt, vri, vr, vg, SRR, Eeff, a, p0, p0p, pm, Reff, pvzpx, fax, pvzp, qvzp1, qvzp2, \
 avg_qvzp1, avg_qvzp2, HVL, bk1, bk2, gs1, gs2 = contact.hertz(lxi, lsum, bpos, alpha_tw, \
 betab, AE, T1A, T2A, T1T2, rb, E, omega, r, v, fbn, fbt, xx, rr1, Pin, COF, b, pbt, \
     kg, cpg, rohg, Req)
+print('TIME HERTZ', time.time() - t)    
 ## BEARINGS ########################################################################
+from GearC import bearings
 btype = 'NJ 406'
 fab = 0
 ngears = 4
@@ -61,8 +71,10 @@ pvl = ngears*(Mvl[:,:,0]*omega[0] + Mvl[:,:,1]*omega[1])
 ## TOTAL POWER LOSS (EXCLUDING NO-LOAD) ############################################
 pv = pvzp + pvl.T
 ## PLOT ############################################################################
+from GearC import plot
 plot.fig(xx, vg, qvzp1, qvzp2, avg_qvzp1, avg_qvzp2, lxi, p0, fnx, load, nmotor)
-## ISO 6336/DIN 3990 + VDI 2736 ####################################################
+# ISO 6336/DIN 3990 + VDI 2736 ####################################################
+from GearC import ISO6336
 SF, SFmin, SH, SHmin = ISO6336.LCC(ft,z,b,m,x,r,ra,rb,rf,betab,alpha,alpha_t,alpha_tw,u,v,\
 E,rohg,epslon_alpha,epslon_beta,epslon_gama,beta,n,mat,sigmaHlim,sigmaFlim,oil,al,Rz)
 ## PRINT ###########################################################################
@@ -124,3 +136,4 @@ np.set_printoptions(precision=1)
 print('Gear power loss - Pvzp [W]: SPEED x LOAD\n', pvzp)
 print('Bearing power loss - Pvl [W]: SPEED x LOAD\n', pvl)
 print('Total power loss (excluding no-laod gear losses) Pv [W]: SPEED x LOAD\n', pv)
+print('TIME TOTAL', time.time() - tt)    
