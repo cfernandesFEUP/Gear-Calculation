@@ -44,6 +44,7 @@ def lines(size, b, pbt, betab, epslon_alpha, epslon_beta, epslon_gama, rb, T1A, 
     ## CONDITIONS FOR THE CALCULATION OF LINES IN CONTACT
     t = time.time()
     if epslon_beta < 1:
+        print('TIME LOOP2', time.time() - t)
         indA = np.where((XC >= 0)*(XC < COND_A))
         indB = np.where((XC >= COND_A)*(XC < COND_B))
         indC = np.where((XC >= COND_B)*(XC < COND_D))
@@ -110,5 +111,5 @@ def hertz(lxi, lsum, bpos, alpha_tw, betab, AE, T1A, T2A, T1T2, rb, E, omega, r,
             qvzp2[i,j] = gama*bk2[i]*pm[i,:,0]*COF[i,j]*vg[j]
             avg_qvzp1[i,j] = qvzp1[i,j]*a[i,:,0]*omega[0,j]/(np.pi*vri[0,j])
             avg_qvzp2[i,j] = qvzp2[i,j]*a[i,:,0]*omega[1,j]/(np.pi*vri[1,j])
-    return fnx, vt, vri, vr, vg, SRR, Eeff, a, p0, p0p, pm, Reff, pvzpx, fax, \
-        pvzp, qvzp1, qvzp2, avg_qvzp1, avg_qvzp2, HVL, bk1, bk2, gs1, gs2
+    return fnx, vt, vri, vr, vg, SRR, Eeff, a, p0, p0p, pm, Reff, R1, R2, pvzpx,\
+        fax, pvzp, qvzp1, qvzp2, avg_qvzp1, avg_qvzp2, HVL, bk1, bk2, gs1, gs2

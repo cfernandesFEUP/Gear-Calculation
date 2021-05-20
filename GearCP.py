@@ -4,8 +4,8 @@ import numpy as np
 import time
 tt = time.time()
 ## GEAR SELECTION ##################################################################
-gear = '951'                    # 'C40',  '501',  '701',  '951',  'TPA'
-mat = ['STEEL', 'STEEL']        # 'PEEK',  'PA66',  'STEEL' (20MnCr5),  'ADI'
+gear = 'C14'                    # 'C40',  '501',  '701',  '951',  'TPA'
+mat = ['POM', 'POM']            # 'PEEK',  'PA66',  'STEEL' (20MnCr5),  'ADI'
 ## GEAR FINISHING ##################################################################
 Ra = np.array([0.6, 0.6])
 Rq = np.array([0.7, 0.7])
@@ -28,7 +28,7 @@ from GearC import LoadStage
 Tbulk = 50.
 NL = 1e6
 nmotor = np.array([200., 350., 700., 1050., 1500., 1750.])# rpm 
-load = ['k01','k03','k07','k09'] # 'k01' up to 'k14 or pinion torque in Nm
+load = ['k01','k03','k04','k05'] # 'k01' up to 'k14 or pinion torque in Nm
 arm = '0.35'# '0.35' or '0.5' FZG Load Stages
 if type(load[0]) is str:
     torqueP = np.array([LoadStage.gtorque(i, arm) for i in load]) 
@@ -56,10 +56,10 @@ Pin, fbt, fbn, ft, fr, fn, fa, fbear, frb, COF = contact.forces\
 (torque, omega, rb, rl, alpha_tw, betab, Req, Ra, xl, miu, lxi, mu, b)
 ## HERTZ CONTACT ###################################################################
 t = time.time()
-fnx, vt, vri, vr, vg, SRR, Eeff, a, p0, p0p, pm, Reff, pvzpx, fax, pvzp, qvzp1, qvzp2, \
-avg_qvzp1, avg_qvzp2, HVL, bk1, bk2, gs1, gs2 = contact.hertz(lxi, lsum, bpos, alpha_tw, \
-betab, AE, T1A, T2A, T1T2, rb, E, omega, r, v, fbn, fbt, xx, rr1, Pin, COF, b, pbt, \
-    kg, cpg, rohg, Req)
+fnx, vt, vri, vr, vg, SRR, Eeff, a, p0, p0p, pm, Reff, R1, R2, pvzpx, fax, pvzp, \
+qvzp1, qvzp2, avg_qvzp1, avg_qvzp2, HVL, bk1, bk2, gs1, gs2 = \
+contact.hertz(lxi, lsum, bpos, alpha_tw, betab, AE, T1A, T2A, T1T2, rb, E, omega, \
+              r, v, fbn, fbt, xx, rr1, Pin, COF, b, pbt, kg, cpg, rohg, Req)
 print('TIME HERTZ', time.time() - t)    
 ## BEARINGS ########################################################################
 from GearC import bearings
@@ -75,8 +75,8 @@ print('TIME TOTAL', time.time() - tt)
 from GearC import plot
 plot.fig(xx, vg, qvzp1, qvzp2, avg_qvzp1, avg_qvzp2, lxi, p0, fnx, load, nmotor)
 # ISO 6336/DIN 3990 + VDI 2736 ####################################################
-from GearC import ISO6336
-SF, SFmin, SH, SHmin = ISO6336.LCC(ft,z,b,m,x,r,ra,rb,rf,betab,alpha,alpha_t,alpha_tw,u,v,\
+from GearC import DIN3990
+SF, SFmin, SH, SHmin = DIN3990.LCC(ft,z,b,m,x,r,ra,rb,rf,betab,alpha,alpha_t,alpha_tw,u,v,\
 E,rohg,epslon_alpha,epslon_beta,epslon_gama,beta,n,mat,sigmaHlim,sigmaFlim,oil,al,Rz)
 ## PRINT ###########################################################################
 print('Gear type:', gear)
