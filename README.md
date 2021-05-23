@@ -1,17 +1,18 @@
-The software is capable to calculate gear geometry according to MAAG book, predict Hertz contact pressure, gear and rolling bearings power losses - only NJ 406 MA and QJ 308 N2MA are implemented because the software is intended for usage with FZG test rig results!
+The software was validated for it typical usage. No warranty is given and the user should always verify the results.
+
+The software is capable to calculate cylindrical gears geometry according to MAAG book, predict Hertz contact pressure, gear and rolling bearings power losses [1-6]. Only NJ 406 MA and QJ 308 N2MA rolling bearing equations are implemented. Additional bearind data can be easily added on the 'bearings.py' file - just follow the same format. 
 
 The DIN3990 safety factors for contact stress and bending stress is also calculated. 
 
-Other Features not included on the repository: gear CAD geometry generation and automatic structured FEM mesh, CalculiX themo-mechanical integration, heat transfer coefficients calculation. Please contact me.
+Other features not included on the repository: gear geometry and structured FEM mesh (Gmsh Python API), CalculiX themo-mechanical integration, heat transfer coefficients calculation [7,8]. Please contact me.
 
-This version includes:
+How to use:
 
 - the main file is 'GearCP.py':
 
-    'GearCP.py' allows to select:
+    'GearCP.py' where you should select:
     
-        - Gear geometry (C14, C40, H501, H701, H951) which is stored into the file "gears.py",
-        additional geometries can be added
+        - Gear geometry (C14, C40, H501, H701, H951 [1,3]) which is stored into the file "gears.py" and additional geometries can be added - just use the same format.
         
         - Gear material:
         
@@ -19,7 +20,7 @@ This version includes:
             
         - Operating Conditions:
         
-            nmotor - list of motor speeds (meaning output speed)
+            nmotor - list of motor speeds (meaning wheel z2 speed)
             load - list of FZG load stages, available with load arm of 0.35 m and 0.5 m
             (check LoadStage.py);
             
@@ -27,10 +28,10 @@ This version includes:
             
         - Oil Selection:
         
-           'dry' - no lubricant, a Cofficient of Friction should be given - useful for plastic gears
-           'PAOR', 'MINR', etc - "oils.py"  according to papers [1, 2, 3]. Calculates the 
-           Coefficient of Friction  using Schlenk approach and corresponding XL and 
-           additional lubricants can be added.
+           'dry' - no lubricant, a Cofficient of Friction should be given - useful for plastic gears;
+           'PAOR', 'MINR', etc - "oils.py"  according to papers [1-4]. Calculates the 
+           Coefficient of Friction using Schlenk equation and the corresponding lubricant parameter XL [1,3]; 
+           Additional lubricants can be added - just use the same format.
                  
  References:
  
