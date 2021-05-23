@@ -17,7 +17,6 @@ def beart(btype, frb, fab, n, ubb, ubr):
         Vm = 0.000149
         B = 23.
         Kdrag = 10*Vm*Kroll*B*(dm**4)
-        return dr, Dr, dm, Grr, Gsl, Kz, Kl, Krs, Kdrag, ubear
     elif btype == 'QJ 308N2MA':
         ubear = ubb
         Dr = 90.
@@ -39,7 +38,7 @@ def beart(btype, frb, fab, n, ubb, ubr):
         Kroll = Kz*((Dr + dr)/(Dr - dr))*10**-12
         Vm = 0.000149
         Kdrag = Vm*Kroll*(dm**5)
-        return dr, Dr, dm, Grr, Gsl, Kz, Kl, Krs, Kdrag, ubear
+    return dr, Dr, dm, Grr, Gsl, Kz, Kl, Krs, Kdrag, ubear
 def pl(btype, frb, fab, n, niu, ubb, ubr):
     dr, Dr, dm, Grr, Gsl, Kz, Kl, Krs, Kdrag, ubear = beart(btype, frb, fab, n, ubb, ubr)
     phi_bl = 1/(np.exp(1)**((2.6e-8*(n*niu)**1.4)*dm))
