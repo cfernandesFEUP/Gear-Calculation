@@ -5,7 +5,7 @@ import time
 tt = time.time()
 ## GEAR SELECTION ##################################################################
 gear = 'C14'                    # 'C40',  '501',  '701',  '951',  'TPA'
-mat = ['POM', 'POM']            # 'PEEK',  'PA66',  'STEEL' (20MnCr5),  'ADI'
+mat = ['STEEL', 'STEEL']            # 'PEEK',  'PA66',  'STEEL' (20MnCr5),  'ADI'
 ## GEAR FINISHING ##################################################################
 Ra = np.array([0.6, 0.6])
 Rq = np.array([0.7, 0.7])
@@ -28,7 +28,7 @@ from GearC import LoadStage
 Tbulk = 50.
 NL = 1e6
 nmotor = np.array([200., 350., 700., 1050., 1500., 1750.])# rpm 
-load = ['k01','k03','k04','k05'] # 'k01' up to 'k14 or pinion torque in Nm
+load = ['k01','k05','k07','k09'] # 'k01' up to 'k14 or pinion torque in Nm
 arm = '0.35'# '0.35' or '0.5' FZG Load Stages
 if type(load[0]) is str:
     torqueP = np.array([LoadStage.gtorque(i, arm) for i in load]) 
@@ -137,4 +137,121 @@ np.set_printoptions(precision=1)
 print('Gear power loss - Pvzp [W]: SPEED x LOAD\n', pvzp)
 print('Bearing power loss - Pvl [W]: SPEED x LOAD\n', pvl)
 print('Total power loss (excluding no-laod gear losses) Pv [W]: SPEED x LOAD\n', pv)
-   
+
+
+xa = np.linspace(-1.5,1.5,200)
+za = np.linspace(0.00001,2.,200)
+
+FNb = 1000*fbn[-1]/b
+RX = Req/1000
+aH = np.sqrt(FNb*RX/(np.pi*Eeff))
+p0 = np.sqrt(FNb*Eeff/(np.pi*RX))
+xH = xa*aH
+zH = za*aH
+
+B = (1/(2*rl[0]/1000*np.sin(alpha_tw))+1/(2*rl[1]/1000*np.sin(alpha_tw)))
+cof = 2*COF.max()
+
+SigmaX, SigmaY, SigmaZ, TauXZ = [np.zeros((len(xH),len(zH))) for _ in range(4)]
+for i in range(len(xH)):
+    for j in range(len(zH)):
+        
+        M = np.sqrt((aH + xH[i])**2 + zH[j]**2)
+        N = np.sqrt((aH - xH[i])**2 + zH[j]**2)
+        
+        phi1 = np.pi*(M + N)/(M*N*np.sqrt(2*M*N + 2*xH[i]**2 + 2*zH[j]**2 -2*aH**2))
+        phi2 = np.pi*(M - N)/(M*N*np.sqrt(2*M*N + 2*xH[i]**2 + 2*zH[j]**2 -2*aH**2))
+    
+        SigmaX[i,j] = -aH*B*Eeff*(zH[j]*((aH**2 + 2*zH[j]**2 + 2*xH[i]**2)*phi1/aH \
+                        - 2*np.pi/aH - 3*xH[i]*phi2) + cof*((2*xH[i]**2 - 2*aH**2\
+                        - 2*zH[j]**2)*phi2 + 2*np.pi*xH[i]/aH + 2*xH[i]*(aH**2 - xH[i]**2 -zH[j]**2)*phi1/aH))/np.pi
+        SigmaY[i,j] = -2*aH*B*Eeff*v[0]*(zH[j]*((aH**2 + zH[j]**2 + xH[i]**2)*phi1/aH \
+                        - np.pi/aH - 2*xH[i]*phi2) + cof*((xH[i]**2 - aH**2\
+                        - zH[j]**2)*phi2 + np.pi*xH[i]/aH + xH[i]*(aH**2 - xH[i]**2 - zH[j]**2)*phi1/aH))/np.pi
+        SigmaZ[i,j] = -aH*B*Eeff*(zH[j]*(aH*phi1 - xH[i]*phi2) + cof*zH[j]**2*phi2)/np.pi
+        
+        TauXZ[i,j] = -aH*B*Eeff*(zH[j]**2*phi2 + cof*((2*xH[i]**2 + aH**2 + 2*zH[j]**2)*phi1*zH[j]/aH\
+                        - 2*np.pi*zH[j]/aH -3*xH[i]*zH[j]*phi2))/np.pi
+
+Tmax = 0.5*(SigmaX-SigmaZ)
+Toct = np.sqrt((SigmaX-SigmaY)**2 + (SigmaY-SigmaZ)**2 + (SigmaZ-SigmaX)**2)/3
+SvonMises = np.sqrt((SigmaX-SigmaY)**2 + (SigmaY-SigmaZ)**2 + (SigmaZ-SigmaX)**2 + 6*TauXZ**2)/np.sqrt(2)
+
+import matplotlib.pyplot as plt     
+cmap = plt.get_cmap('jet', 21)
+nc = 21
+plt.figure(1)
+# plt.subplot(2,3,1)
+plt.title(r'$\sigma_{xx}$ / $p_0$')
+cmin = SigmaX.min()/p0
+cmax = SigmaX.max()/p0
+plt.contourf(xH/aH,zH/aH,SigmaX.T/p0,levels=np.linspace(cmin,cmax,nc),cmap=cmap)
+plt.xlabel('x / b')
+plt.ylabel('z / b')
+plt.grid()
+plt.colorbar()
+
+# plt.subplot(2,3,2)
+plt.figure(2)
+plt.title(r'$\sigma_{yy}$ / $p_0$')
+cmin = SigmaY.min()/p0
+cmax = SigmaY.max()/p0
+plt.contourf(xH/aH,zH/aH,SigmaY.T/p0,levels=np.linspace(cmin,cmax,nc),cmap=cmap)
+plt.xlabel('x / b')
+plt.ylabel('z / b')
+plt.grid()
+plt.colorbar()
+
+plt.figure(3)
+# plt.subplot(2,3,3)
+plt.title(r'$\sigma_{zz}$ / $p_0$')
+cmin = SigmaZ.min()/p0
+cmax = SigmaZ.max()/p0
+plt.contourf(xH/aH,zH/aH,SigmaZ.T/p0,levels=np.linspace(cmin,cmax,nc),cmap=cmap)
+plt.xlabel('x / b')
+plt.ylabel('z / b')
+plt.grid()
+plt.colorbar()
+
+plt.figure(4)
+# plt.subplot(2,3,4)
+plt.title(r'$\tau_{xz}$ / $p_0$')
+cmin = TauXZ.min()/p0
+cmax = TauXZ.max()/p0
+plt.contourf(xH/aH,zH/aH,TauXZ.T/p0,levels=np.linspace(cmin,cmax,nc),cmap=cmap)
+plt.xlabel('x / b')
+plt.ylabel('z / b')
+plt.grid()
+plt.colorbar()
+
+plt.figure(5)
+# plt.subplot(2,3,5)
+plt.title(r'$\tau_{max}$ / $p_0$')
+cmin = Tmax.min()/p0
+cmax = Tmax.max()/p0
+plt.contourf(xH/aH,zH/aH,Tmax.T/p0,levels=np.linspace(cmin,cmax,nc),cmap=cmap)
+plt.xlabel('x / b')
+plt.ylabel('z / b')
+plt.grid()
+plt.colorbar()
+
+plt.figure(6)
+# plt.subplot(2,3,6)
+plt.title(r'$\tau_{oct}$ / $p_0$')
+cmin = Toct.min()/p0
+cmax = Toct.max()/p0
+plt.contourf(xH/aH,zH/aH,Toct.T/p0,levels=np.linspace(cmin,cmax,nc),cmap=cmap)
+plt.xlabel('x / b')
+plt.ylabel('z / b')
+plt.grid()
+plt.colorbar()
+
+plt.figure(7)
+plt.title(r'$\sigma_{von~Mises}$ / $p_0$')
+cmin = SvonMises.min()/p0
+cmax = SvonMises.max()/p0
+plt.contourf(xH/aH,zH/aH,SvonMises.T/p0,levels=np.linspace(cmin,cmax,nc),cmap=cmap)
+plt.xlabel('x / b')
+plt.ylabel('z / b')
+plt.grid()
+plt.colorbar()
