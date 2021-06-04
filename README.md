@@ -2,7 +2,7 @@
 
 
 <p align="center"> 
-<img src="https://github.com/cfernandesFEUP/Machine-Elements/blob/master/figures/pdf/dentado_interC.png">
+<img src="https://github.com/cfernandesFEUP/Machine-Elements/blob/master/figures/pdf/dentado_cremalheira.png">
 </p>
 
 The software was validated for its typical usage by the author. No warranty is given and the user should always verify the results.
