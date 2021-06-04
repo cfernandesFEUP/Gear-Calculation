@@ -1,3 +1,10 @@
+# Gear Calculation
+
+
+<p align="center"> 
+<img src="https://github.com/cfernandesFEUP/Machine-Elements/blob/master/figures/pdf/dentado_interC.png">
+</p>
+
 The software was validated for its typical usage by the author. No warranty is given and the user should always verify the results.
 
 The software is capable to calculate cylindrical gears geometry according to MAAG book, predict Hertz contact pressure, gear and rolling bearings power losses [1-6]. Only NJ 406 MA and QJ 308 N2MA rolling bearing equations are implemented. Additional bearind data can be easily added on the 'bearings.py' file - just follow the same format. 
