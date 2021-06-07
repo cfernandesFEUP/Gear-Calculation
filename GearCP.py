@@ -26,7 +26,7 @@ import numpy as np
 import time
 tt = time.time()
 ## GEAR SELECTION ##################################################################
-gear = 'EEE'                    # 'C40',  '501',  '701',  '951',  'TPA'
+gear = 'C14'                        # 'C40',  '501',  '701',  '951',  'TPA'
 mat = ['STEEL', 'STEEL']            # 'PEEK',  'PA66',  'STEEL' (20MnCr5),  'ADI'
 ## GEAR FINISHING ##################################################################
 Ra = np.array([0.6, 0.6])
@@ -161,6 +161,8 @@ print('Bearing power loss - Pvl [W]: SPEED x LOAD\n', pvl)
 print('Total power loss (excluding no-laod gear losses) Pv [W]: SPEED x LOAD\n', pv)
 
 
+## UNDER DEVELOPMENT ##########################################################
+
 xa = np.linspace(-1.5,1.5,200)
 za = np.linspace(0.00001,2.,200)
 
@@ -202,7 +204,7 @@ SvonMises = np.sqrt((SigmaX-SigmaY)**2 + (SigmaY-SigmaZ)**2 + (SigmaZ-SigmaX)**2
 import matplotlib.pyplot as plt     
 cmap = plt.get_cmap('jet', 21)
 nc = 21
-plt.figure(1)
+plt.figure()
 # plt.subplot(2,3,1)
 plt.title(r'$\sigma_{xx}$ / $p_0$')
 cmin = SigmaX.min()/p0
@@ -214,7 +216,7 @@ plt.grid()
 plt.colorbar()
 
 # plt.subplot(2,3,2)
-plt.figure(2)
+plt.figure()
 plt.title(r'$\sigma_{yy}$ / $p_0$')
 cmin = SigmaY.min()/p0
 cmax = SigmaY.max()/p0
@@ -224,7 +226,7 @@ plt.ylabel('z / b')
 plt.grid()
 plt.colorbar()
 
-plt.figure(3)
+plt.figure()
 # plt.subplot(2,3,3)
 plt.title(r'$\sigma_{zz}$ / $p_0$')
 cmin = SigmaZ.min()/p0
@@ -235,7 +237,7 @@ plt.ylabel('z / b')
 plt.grid()
 plt.colorbar()
 
-plt.figure(4)
+plt.figure()
 # plt.subplot(2,3,4)
 plt.title(r'$\tau_{xz}$ / $p_0$')
 cmin = TauXZ.min()/p0
@@ -246,7 +248,7 @@ plt.ylabel('z / b')
 plt.grid()
 plt.colorbar()
 
-plt.figure(5)
+plt.figure()
 # plt.subplot(2,3,5)
 plt.title(r'$\tau_{max}$ / $p_0$')
 cmin = Tmax.min()/p0
@@ -257,7 +259,7 @@ plt.ylabel('z / b')
 plt.grid()
 plt.colorbar()
 
-plt.figure(6)
+plt.figure()
 # plt.subplot(2,3,6)
 plt.title(r'$\tau_{oct}$ / $p_0$')
 cmin = Toct.min()/p0
@@ -268,7 +270,7 @@ plt.ylabel('z / b')
 plt.grid()
 plt.colorbar()
 
-plt.figure(7)
+plt.figure()
 plt.title(r'$\sigma_{von~Mises}$ / $p_0$')
 cmin = SvonMises.min()/p0
 cmax = SvonMises.max()/p0
