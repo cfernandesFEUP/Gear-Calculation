@@ -69,8 +69,8 @@ def gtype(gear):
         alpha = 20.0
         beta = 0.0
         m = 2
-        z = np.array([20., 20.])
+        z = np.array([20., 60.])
         x = np.array([0., 0.])
-        b = 20
+        b = 12
         dsh = 20.0
     return alpha, beta, m, z, x, b, dsh

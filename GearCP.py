@@ -1,10 +1,32 @@
+'''MIT License
+
+Copyright (c) 2021 Carlos M.C.G. Fernandes
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE. '''
+
 import sys
 sys.dont_write_bytecode = True
 import numpy as np
 import time
 tt = time.time()
 ## GEAR SELECTION ##################################################################
-gear = 'C14'                    # 'C40',  '501',  '701',  '951',  'TPA'
+gear = 'EEE'                    # 'C40',  '501',  '701',  '951',  'TPA'
 mat = ['STEEL', 'STEEL']            # 'PEEK',  'PA66',  'STEEL' (20MnCr5),  'ADI'
 ## GEAR FINISHING ##################################################################
 Ra = np.array([0.6, 0.6])
@@ -118,14 +140,14 @@ print('Axial load F_a [N]:\n', fa)
 print('Bearings load (equal distance) F_bearings [N]:\n', fbear)
 np.set_printoptions(precision=2)
 print('Maximum Hertzian Contact Pressure p_0 [MPa]:\n', \
-        np.array([max(p0[0,:,i])/1e6 for i in range(len(fbn))]))
+        np.array([p0[i,:,:].max()/1e6 for i in range(len(fbn))]))
 print('Hertzian Contact Pressure Pitch Point p_0 [GPa]:\n', p0p/1e6)
 print('Maximum shear stress [MPa]:\n', \
-      np.array([max(0.3*p0[0,:,i])/1e6 for i in range(len(fbn))]))
+      np.array([0.3*p0[i,:,:].max()/1e6 for i in range(len(fbn))]))
 print('Maximum octaedric shear stress [MPa]:\n',\
-      np.array([max(0.272*p0[0,:,i])/1e6 for i in range(len(fbn))]))
+      np.array([0.272*p0[i,:,:].max()/1e6 for i in range(len(fbn))]))
 print('Location of maximum equivalent stress [\u03BCm]:\n', \
-      np.array([min(0.7861*a[0,:,i]*1e6) for i in range(len(fbn))]))
+      np.array([0.7861*a[i,:,:].min()*1e6 for i in range(len(fbn))]))
 print('Oil temperature Tlub [\u00b0C]:',"%.1f" % Tlub)
 print('Dynamic Viscosity \u03B7 [mPas]:',"%.2f" % miu)
 print('Kinematic Viscosity \u03BD [cSt]:',"%.2f" % niu)
