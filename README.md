@@ -9,7 +9,7 @@ The software was validated for its typical usage by the author. No warranty is g
 
 The software is capable to calculate cylindrical gears geometry according to MAAG book, predict Hertz contact pressure, gear and rolling bearings power losses [1-6]. Only NJ 406 MA and QJ 308 N2MA rolling bearing equations are implemented. Additional bearing data can be easily added on the 'bearings.py' file - just follow the same format. 
 
-The DIN3990 safety factors for contact stress and bending stress is also calculated. 
+The DIN3990 safety factors for contact stress and bending stress are also calculated. 
 
 Other features not included on the repository: gear geometry and structured FEM mesh (Gmsh Python API), CalculiX themo-mechanical integration, heat transfer coefficients calculation [7,8]. Please contact me.
 
