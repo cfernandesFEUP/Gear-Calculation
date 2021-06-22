@@ -115,5 +115,5 @@ def field(fbn,Req,Eeff,v,b,rl,alpha_tw,COF):
     plt.ylabel('z / b')
     plt.grid()
     plt.colorbar(format=tick.FormatStrFormatter('%.2f'))
-    plt.savefig('logo.pdf')
+    plt.savefig('logo.png')
     return SigmaX, SigmaY, SigmaZ, TauXZ, Tmax, Toct, SvonMises
