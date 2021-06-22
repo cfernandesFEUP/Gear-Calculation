@@ -107,14 +107,13 @@ def field(fbn,Req,Eeff,v,b,rl,alpha_tw,COF):
     plt.ylabel('z / b')
     plt.grid()
     plt.colorbar()
-    
+    import matplotlib.ticker as tick
     plt.figure()
     plt.title(r'$\sigma_{von~Mises}$ / $p_0$')
-    cmin = SvonMises.min()/p0
-    cmax = SvonMises.max()/p0
-    plt.contourf(xH/aH,zH/aH,SvonMises.T/p0,levels=np.linspace(cmin,cmax,nc),cmap=cmap)
+    plt.contourf(xH/aH,zH/aH,SvonMises.T/p0,cmap=cmap,levels = np.linspace(0., 0.32, 15))
     plt.xlabel('x / b')
     plt.ylabel('z / b')
     plt.grid()
-    plt.colorbar()
+    plt.colorbar(format=tick.FormatStrFormatter('%.2f'))
+    plt.savefig('logo.pdf')
     return SigmaX, SigmaY, SigmaZ, TauXZ, Tmax, Toct, SvonMises

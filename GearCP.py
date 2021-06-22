@@ -82,8 +82,8 @@ qvzp1, qvzp2, avg_qvzp1, avg_qvzp2, HVL, bk1, bk2, gs1, gs2 = \
 contact.hertz(lxi, lsum, bpos, alpha_tw, betab, AE, T1A, T2A, T1T2, rb, E, omega, \
               r, v, fbn, fbt, xx, rr1, Pin, COF, b, pbt, kg, cpg, rohg, Req)
 ## CONTACT STRESSES FIELD ##########################################################
-# from GearC import stress
-# SigmaX, SigmaY, SigmaZ, TauXZ, Tmax, Toct, SvonMises = stress.field(fbn,Req,Eeff,v,b,rl,alpha_tw,COF)
+from GearC import stress
+SigmaX, SigmaY, SigmaZ, TauXZ, Tmax, Toct, SvonMises = stress.field(fbn,Req,Eeff,v,b,rl,alpha_tw,COF)
 ## BEARINGS ########################################################################
 from GearC import bearings
 btype = 'NJ 406'
