@@ -9,7 +9,7 @@ def astm(oil, Tlub):
     elif base == 'PAO':
         s = 0.7382
         t = 0.1335
-        xl = 0.666
+        xl = 0.650
     elif base == 'PAG':
         s = 0.5489
         t = 0.1485

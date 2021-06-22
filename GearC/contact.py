@@ -18,7 +18,7 @@ def forces(torque, omega, rb, rl, alpha_tw, betab, Req, Ra, xl, miu, lxi, mu, b)
         COF = 0.048*(np.outer(fbn,1/vsumc)/(lmin*Req))**0.2*miu**(-0.05)*Ram**0.25*xl
     else:
         COF = mu*np.ones((fbn.size, omega[0].size))
-    return Pin, fbt, fbn, ft, fr, fn, fa, fbear, frb, COF
+    return Pin, fbt, fbn, ft, fr, fn, fa, fbear, frb, COF, vsumc
 ## LINES OF CONTACT ###########################################################
 def lines(size, b, pbt, betab, epslon_alpha, epslon_beta, epslon_gama, rb, T1A, T2A, AE):
     COND_A = b*np.tan(betab)

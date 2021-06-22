@@ -29,7 +29,7 @@ tt = time.time()
 gear = 'C14'                        # 'C40',  '501',  '701',  '951',  'TPA'
 mat = ['STEEL', 'STEEL']            # 'PEEK',  'PA66',  'STEEL' (20MnCr5),  'ADI'
 ## GEAR FINISHING ##################################################################
-Ra = np.array([0.6, 0.6])
+Ra = np.array([0.5, 0.5])
 Rq = np.array([0.7, 0.7])
 Rz = np.array([4.8, 4.8])
 ## TYPE OF GEAR ####################################################################
@@ -39,7 +39,7 @@ alpha, beta, m, z, x, b, dsh = gears.gtype(gear)
 from GearC import MAAG
 mt, pt, pb, pbt, betab, al, r, rl, ra, rb, rf, alpha_t, alpha_tw, epslon_alpha,\
 epslon_a, epslon_beta, epslon_gama, galpha, galphai, Req, u, T1T2, T1A, T2A, \
-AB, AC, AD, AE, rA1, rA2, rB1, rB2, rD1, rD2 = MAAG.calc(alpha, beta, m, z, x, b)
+AB, AC, AD, AE, rA1, rA2, rB1, rB2, rD1, rD2, HV = MAAG.calc(alpha, beta, m, z, x, b)
 ## LINES OF CONTACT ################################################################
 size = 1000
 from GearC import contact
@@ -49,8 +49,8 @@ epslon_alpha, epslon_beta, epslon_gama, rb, T1A, T2A, AE)
 from GearC import LoadStage
 Tbulk = 50.
 NL = 1e6
-nmotor = np.array([200., 350., 700., 1050., 1500., 1750.])# rpm 
-load = ['k01','k05','k07','k09'] # 'k01' up to 'k14 or pinion torque in Nm
+nmotor = np.array([200., 350., 700., 1050., 1500., 1750.])# rpm ([1000])#
+load = ['k01','k05','k07','k09'] # 'k01' up to 'k14 or pinion torque in Nm [165.5]
 arm = '0.35'# '0.35' or '0.5' FZG Load Stages
 if type(load[0]) is str:
     torqueP = np.array([LoadStage.gtorque(i, arm) for i in load]) 
@@ -62,7 +62,7 @@ omega = np.pi*n/30
 ## OIL SELECTION ###################################################################
 from GearC import oils
 oil = 'P150'
-Tlub = 80.0
+Tlub = 60.0
 Tamb = 15.
 if oil == 'dry':
     mu = 0.28
@@ -74,15 +74,16 @@ else:
 from GearC import material
 E, v, cpg, kg, rohg, sigmaHlim, sigmaFlim = material.matp(mat, Tbulk, NL)
 ## GEAR FORCES #####################################################################
-Pin, fbt, fbn, ft, fr, fn, fa, fbear, frb, COF = contact.forces\
+Pin, fbt, fbn, ft, fr, fn, fa, fbear, frb, COF, vsumc = contact.forces\
 (torque, omega, rb, rl, alpha_tw, betab, Req, Ra, xl, miu, lxi, mu, b)
 ## HERTZ CONTACT ###################################################################
-t = time.time()
 fnx, vt, vri, vr, vg, SRR, Eeff, a, p0, p0p, pm, Reff, R1, R2, pvzpx, fax, pvzp, \
 qvzp1, qvzp2, avg_qvzp1, avg_qvzp2, HVL, bk1, bk2, gs1, gs2 = \
 contact.hertz(lxi, lsum, bpos, alpha_tw, betab, AE, T1A, T2A, T1T2, rb, E, omega, \
               r, v, fbn, fbt, xx, rr1, Pin, COF, b, pbt, kg, cpg, rohg, Req)
-print('TIME HERTZ', time.time() - t)    
+## CONTACT STRESSES FIELD ##########################################################
+# from GearC import stress
+# SigmaX, SigmaY, SigmaZ, TauXZ, Tmax, Toct, SvonMises = stress.field(fbn,Req,Eeff,v,b,rl,alpha_tw,COF)
 ## BEARINGS ########################################################################
 from GearC import bearings
 btype = 'NJ 406'
@@ -159,123 +160,3 @@ np.set_printoptions(precision=1)
 print('Gear power loss - Pvzp [W]: SPEED x LOAD\n', pvzp)
 print('Bearing power loss - Pvl [W]: SPEED x LOAD\n', pvl)
 print('Total power loss (excluding no-laod gear losses) Pv [W]: SPEED x LOAD\n', pv)
-
-
-## UNDER DEVELOPMENT ##########################################################
-
-xa = np.linspace(-1.5,1.5,200)
-za = np.linspace(0.00001,2.,200)
-
-FNb = 1000*fbn[-1]/b
-RX = Req/1000
-aH = np.sqrt(FNb*RX/(np.pi*Eeff))
-p0 = np.sqrt(FNb*Eeff/(np.pi*RX))
-xH = xa*aH
-zH = za*aH
-
-B = (1/(2*rl[0]/1000*np.sin(alpha_tw))+1/(2*rl[1]/1000*np.sin(alpha_tw)))
-cof = 2*COF.max()
-
-SigmaX, SigmaY, SigmaZ, TauXZ = [np.zeros((len(xH),len(zH))) for _ in range(4)]
-for i in range(len(xH)):
-    for j in range(len(zH)):
-        
-        M = np.sqrt((aH + xH[i])**2 + zH[j]**2)
-        N = np.sqrt((aH - xH[i])**2 + zH[j]**2)
-        
-        phi1 = np.pi*(M + N)/(M*N*np.sqrt(2*M*N + 2*xH[i]**2 + 2*zH[j]**2 -2*aH**2))
-        phi2 = np.pi*(M - N)/(M*N*np.sqrt(2*M*N + 2*xH[i]**2 + 2*zH[j]**2 -2*aH**2))
-    
-        SigmaX[i,j] = -aH*B*Eeff*(zH[j]*((aH**2 + 2*zH[j]**2 + 2*xH[i]**2)*phi1/aH \
-                        - 2*np.pi/aH - 3*xH[i]*phi2) + cof*((2*xH[i]**2 - 2*aH**2\
-                        - 2*zH[j]**2)*phi2 + 2*np.pi*xH[i]/aH + 2*xH[i]*(aH**2 - xH[i]**2 -zH[j]**2)*phi1/aH))/np.pi
-        SigmaY[i,j] = -2*aH*B*Eeff*v[0]*(zH[j]*((aH**2 + zH[j]**2 + xH[i]**2)*phi1/aH \
-                        - np.pi/aH - 2*xH[i]*phi2) + cof*((xH[i]**2 - aH**2\
-                        - zH[j]**2)*phi2 + np.pi*xH[i]/aH + xH[i]*(aH**2 - xH[i]**2 - zH[j]**2)*phi1/aH))/np.pi
-        SigmaZ[i,j] = -aH*B*Eeff*(zH[j]*(aH*phi1 - xH[i]*phi2) + cof*zH[j]**2*phi2)/np.pi
-        
-        TauXZ[i,j] = -aH*B*Eeff*(zH[j]**2*phi2 + cof*((2*xH[i]**2 + aH**2 + 2*zH[j]**2)*phi1*zH[j]/aH\
-                        - 2*np.pi*zH[j]/aH -3*xH[i]*zH[j]*phi2))/np.pi
-
-Tmax = 0.5*(SigmaX-SigmaZ)
-Toct = np.sqrt((SigmaX-SigmaY)**2 + (SigmaY-SigmaZ)**2 + (SigmaZ-SigmaX)**2)/3
-SvonMises = np.sqrt((SigmaX-SigmaY)**2 + (SigmaY-SigmaZ)**2 + (SigmaZ-SigmaX)**2 + 6*TauXZ**2)/np.sqrt(2)
-
-import matplotlib.pyplot as plt     
-cmap = plt.get_cmap('jet', 21)
-nc = 21
-plt.figure()
-# plt.subplot(2,3,1)
-plt.title(r'$\sigma_{xx}$ / $p_0$')
-cmin = SigmaX.min()/p0
-cmax = SigmaX.max()/p0
-plt.contourf(xH/aH,zH/aH,SigmaX.T/p0,levels=np.linspace(cmin,cmax,nc),cmap=cmap)
-plt.xlabel('x / b')
-plt.ylabel('z / b')
-plt.grid()
-plt.colorbar()
-
-# plt.subplot(2,3,2)
-plt.figure()
-plt.title(r'$\sigma_{yy}$ / $p_0$')
-cmin = SigmaY.min()/p0
-cmax = SigmaY.max()/p0
-plt.contourf(xH/aH,zH/aH,SigmaY.T/p0,levels=np.linspace(cmin,cmax,nc),cmap=cmap)
-plt.xlabel('x / b')
-plt.ylabel('z / b')
-plt.grid()
-plt.colorbar()
-
-plt.figure()
-# plt.subplot(2,3,3)
-plt.title(r'$\sigma_{zz}$ / $p_0$')
-cmin = SigmaZ.min()/p0
-cmax = SigmaZ.max()/p0
-plt.contourf(xH/aH,zH/aH,SigmaZ.T/p0,levels=np.linspace(cmin,cmax,nc),cmap=cmap)
-plt.xlabel('x / b')
-plt.ylabel('z / b')
-plt.grid()
-plt.colorbar()
-
-plt.figure()
-# plt.subplot(2,3,4)
-plt.title(r'$\tau_{xz}$ / $p_0$')
-cmin = TauXZ.min()/p0
-cmax = TauXZ.max()/p0
-plt.contourf(xH/aH,zH/aH,TauXZ.T/p0,levels=np.linspace(cmin,cmax,nc),cmap=cmap)
-plt.xlabel('x / b')
-plt.ylabel('z / b')
-plt.grid()
-plt.colorbar()
-
-plt.figure()
-# plt.subplot(2,3,5)
-plt.title(r'$\tau_{max}$ / $p_0$')
-cmin = Tmax.min()/p0
-cmax = Tmax.max()/p0
-plt.contourf(xH/aH,zH/aH,Tmax.T/p0,levels=np.linspace(cmin,cmax,nc),cmap=cmap)
-plt.xlabel('x / b')
-plt.ylabel('z / b')
-plt.grid()
-plt.colorbar()
-
-plt.figure()
-# plt.subplot(2,3,6)
-plt.title(r'$\tau_{oct}$ / $p_0$')
-cmin = Toct.min()/p0
-cmax = Toct.max()/p0
-plt.contourf(xH/aH,zH/aH,Toct.T/p0,levels=np.linspace(cmin,cmax,nc),cmap=cmap)
-plt.xlabel('x / b')
-plt.ylabel('z / b')
-plt.grid()
-plt.colorbar()
-
-plt.figure()
-plt.title(r'$\sigma_{von~Mises}$ / $p_0$')
-cmin = SvonMises.min()/p0
-cmax = SvonMises.max()/p0
-plt.contourf(xH/aH,zH/aH,SvonMises.T/p0,levels=np.linspace(cmin,cmax,nc),cmap=cmap)
-plt.xlabel('x / b')
-plt.ylabel('z / b')
-plt.grid()
-plt.colorbar()

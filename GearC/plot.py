@@ -1,5 +1,6 @@
 ## PLOT #######################################################################
-import matplotlib.pyplot as plt 
+import matplotlib.pyplot as plt
+plt.close('all')
 def fig(xx, vg, qvzp1, qvzp2, avg_qvzp1, avg_qvzp2, lxi, p0, fnx, load, nmotor):
     for i in range(len(load)):
         plt.figure()

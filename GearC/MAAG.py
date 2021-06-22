@@ -62,6 +62,8 @@ def calc(alpha, beta, m, z, x, b):
     rA2 = np.sqrt((T2A - AE)**2 + rb[1]**2)
     rB2 = np.sqrt((T2A - AD)**2 + rb[1]**2)
     rD2 = np.sqrt((T2A - AB)**2 + rb[1]**2)
+    ## GEAR LOSS FACTOR ACCORDING TO OHLENDORF
+    HV = np.pi*(u+1)*(1-epslon_alpha + epslon_a[0]**2 + epslon_a[1]**2)/(z[0]*u*np.cos(betab))
     return mt, pt, pb, pbt, betab, al, r, rl, ra, rb, rf, alpha_t, alpha_tw, \
     epslon_alpha, epslon_a, epslon_beta, epslon_gama, galpha, galphai, Req, u,\
-    T1T2, T1A, T2A, AB, AC, AD, AE, rA1, rA2, rB1, rB2, rD1, rD2
+    T1T2, T1A, T2A, AB, AC, AD, AE, rA1, rA2, rB1, rB2, rD1, rD2, HV
