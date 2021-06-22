@@ -2,7 +2,7 @@
 
 
 <p align="center"> 
-<img src="https://github.com/cfernandesFEUP/Gear-Calculation/tree/master/logo.png">
+<img src="https://github.com/cfernandesFEUP/Gear-Calculation/tree/master/GearC/logo.png">
 </p>
 
 The software was validated for its typical usage by the author. No warranty is given and the user should always verify the results.
