@@ -1,5 +1,4 @@
 import numpy as np
-import time
 ## GEAR FORCES AND POWER LOSS #################################################
 def forces(torque, omega, rb, rl, alpha_tw, betab, Req, Ra, xl, miu, lxi, mu, b):
     Pin = np.outer(omega[0],torque[0])
@@ -37,14 +36,10 @@ def lines(size, b, pbt, betab, epslon_alpha, epslon_beta, epslon_gama, rb, T1A, 
     Lh = np.zeros([len(k),len(xx),len(bpos)])
     L = np.zeros([len(xx),len(bpos)])
     ## POSITIONS ALONG PLANE OF ACTION
-    t = time.time()
     for i in range(len(k)):
         XC[i] = np.meshgrid(np.add(xx,k[i]*pbt),bpos*np.tan(betab))[0]
-    print('TIME LOOP1', time.time() - t)
     ## CONDITIONS FOR THE CALCULATION OF LINES IN CONTACT
-    t = time.time()
     if epslon_beta < 1:
-        print('TIME LOOP2', time.time() - t)
         indA = np.where((XC >= 0)*(XC < COND_A))
         indB = np.where((XC >= COND_A)*(XC < COND_B))
         indC = np.where((XC >= COND_B)*(XC < COND_D))
@@ -58,7 +53,6 @@ def lines(size, b, pbt, betab, epslon_alpha, epslon_beta, epslon_gama, rb, T1A, 
         Lh[indA] = XC[indA]/np.sin(betab)
         Lh[indB] = COND_B/np.sin(betab)
         Lh[indC] = COND_B/np.sin(betab) - (XC[indC] - COND_C)/np.sin(betab)
-    print('TIME LOOP2', time.time() - t)
     ## CUT THE ARRAYS OVER THE PATH OF CONTACT
     L = np.sum(Lh,axis=0)
     C1 = xx < COND_B

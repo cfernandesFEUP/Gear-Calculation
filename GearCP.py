@@ -23,8 +23,6 @@ SOFTWARE. '''
 import sys
 sys.dont_write_bytecode = True
 import numpy as np
-import time
-tt = time.time()
 ## GEAR SELECTION ##################################################################
 gear = 'C14'                        # 'C40',  '501',  '701',  '951',  'TPA'
 mat = ['STEEL', 'STEEL']            # 'PEEK',  'PA66',  'STEEL' (20MnCr5),  'ADI'
@@ -49,8 +47,8 @@ epslon_alpha, epslon_beta, epslon_gama, rb, T1A, T2A, AE)
 from GearC import LoadStage
 Tbulk = 50.
 NL = 1e6
-nmotor = np.array([200., 350., 700., 1050., 1500., 1750.])# rpm ([1000])#
-load = ['k01','k05','k07','k09'] # 'k01' up to 'k14 or pinion torque in Nm [165.5]
+nmotor = np.array([1000])#200., 350., 700., 1050., 1500., 1750.])# rpm ([1000])#
+load = [165.5]#'k01','k05','k07','k09'] # 'k01' up to 'k14 or pinion torque in Nm [165.5]
 arm = '0.35'# '0.35' or '0.5' FZG Load Stages
 if type(load[0]) is str:
     torqueP = np.array([LoadStage.gtorque(i, arm) for i in load]) 
@@ -93,7 +91,6 @@ Mvl, phi_bl, Msl, Mrr, Mdrag, Grr, Gsl, usl = bearings.pl(btype, frb, fab, n, ni
 pvl = ngears*(Mvl[:,:,0]*omega[0] + Mvl[:,:,1]*omega[1])
 ## TOTAL POWER LOSS (EXCLUDING NO-LOAD) ############################################
 pv = pvzp + pvl.T
-print('TIME TOTAL', time.time() - tt) 
 ## PLOT ############################################################################
 from GearC import plot
 plot.fig(xx, vg, qvzp1, qvzp2, avg_qvzp1, avg_qvzp2, lxi, p0, fnx, load, nmotor)
