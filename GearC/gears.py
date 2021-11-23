@@ -73,4 +73,12 @@ def gtype(gear):
         x = np.array([0., 0.])
         b = 20
         dsh = 20.0
+    elif gear == 'OM6':
+        alpha = 20.0
+        beta = 30.0
+        m = 2.
+        z = np.array([20., 41.])
+        x = np.array([0., 0.])
+        b = 20
+        dsh = 20.0
     return alpha, beta, m, z, x, b, dsh
