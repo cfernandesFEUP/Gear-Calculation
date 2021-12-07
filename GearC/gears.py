@@ -81,4 +81,12 @@ def gtype(gear):
         x = np.array([0., 0.])
         b = 20
         dsh = 20.0
+    elif gear == 'COM':
+        alpha = 20.0
+        beta = 0.0
+        m = 2.
+        z = np.array([25., 40.])
+        x = np.array([0.15539, -0.15539])
+        b = 20
+        dsh = 20.0
     return alpha, beta, m, z, x, b, dsh

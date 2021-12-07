@@ -24,10 +24,10 @@ import sys
 sys.dont_write_bytecode = True
 import numpy as np
 ## GEAR SELECTION ##################################################################
-gear = 'OM6'                        # 'C40',  '501',  '701',  '951',  'TPA'
+gear = 'COM'                        # 'C40',  '501',  '701',  '951',  'TPA'
 mat = ['STEEL', 'STEEL']            # 'PEEK',  'PA66',  'STEEL' (20MnCr5),  'ADI'
 ## GEAR FINISHING ##################################################################
-Ra = np.array([0.5, 0.5])
+Ra = np.array([0.6, 0.6])
 Rq = np.array([0.7, 0.7])
 Rz = np.array([4.8, 4.8])
 ## TYPE OF GEAR ####################################################################
@@ -47,8 +47,8 @@ epslon_alpha, epslon_beta, epslon_gama, rb, T1A, T2A, AE)
 from GearC import LoadStage
 Tbulk = 50.
 NL = 1e6
-nmotor = np.array([1000])#200., 350., 700., 1050., 1500., 1750.])# rpm ([1000])#
-load = [165.5]#'k01','k05','k07','k09'] # 'k01' up to 'k14 or pinion torque in Nm [165.5]
+nmotor = np.array([937.5])#200., 350., 700., 1050., 1500., 1750.])# rpm ([1000])#
+load = [130.]#'k01','k05','k07','k09'] # 'k01' up to 'k14 or pinion torque in Nm [165.5]
 arm = '0.35'# '0.35' or '0.5' FZG Load Stages
 if type(load[0]) is str:
     torqueP = np.array([LoadStage.gtorque(i, arm) for i in load]) 
@@ -60,7 +60,7 @@ omega = np.pi*n/30
 ## OIL SELECTION ###################################################################
 from GearC import oils
 oil = 'P150'
-Tlub = 60.0
+Tlub = 65.0
 Tamb = 15.
 if oil == 'dry':
     mu = 0.28
