@@ -24,7 +24,7 @@ import sys
 sys.dont_write_bytecode = True
 import numpy as np
 ## GEAR SELECTION ##################################################################
-gear = 'COM'                        # 'C40',  '501',  '701',  '951',  'TPA'
+gear = 'C14'                        # 'C40',  '501',  '701',  '951',  'TPA'
 mat = ['STEEL', 'STEEL']            # 'PEEK',  'PA66',  'STEEL' (20MnCr5),  'ADI'
 ## GEAR FINISHING ##################################################################
 Ra = np.array([0.6, 0.6])

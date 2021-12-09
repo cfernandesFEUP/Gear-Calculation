@@ -107,6 +107,7 @@ def field(fbn,Req,Eeff,v,b,rl,alpha_tw,COF):
     plt.ylabel('z / b')
     plt.grid()
     plt.colorbar()
+    
     import matplotlib.ticker as tick
     plt.figure()
     plt.title(r'$\sigma_{von~Mises}$ / $p_0$')

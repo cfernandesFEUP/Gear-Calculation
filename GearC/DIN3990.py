@@ -318,7 +318,7 @@ def LCC(ft,z,b,m,x,r,ra,rb,rf,betab,alpha,alpha_t,alpha_tw,u,v,E,rohg,\
     print('Flank pressure: ' + str(sigmaH))
     print('Permissible flank pressure: ' + str(sigmaHP))
     print('Flank pressure safety factor (SH): ' + str(SH))
-    print('From factor YF: ' + str(YF))
+    print('Form factor YF: ' + str(YF))
     print('YS: ' + str(YS))
     print('YB: ' + str(YB))
     print('Nominal root stress: ' + str(sigmaF0))

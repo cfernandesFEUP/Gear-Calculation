@@ -1,6 +1,5 @@
 ## PLOT #######################################################################
 import matplotlib.pyplot as plt
-plt.close('all')
 def fig(xx, vg, qvzp1, qvzp2, avg_qvzp1, avg_qvzp2, lxi, p0, fnx, load, nmotor):
     for i in range(len(load)):
         plt.figure()
@@ -10,7 +9,7 @@ def fig(xx, vg, qvzp1, qvzp2, avg_qvzp1, avg_qvzp2, lxi, p0, fnx, load, nmotor):
         plt.title('Load per face width')
         plt.grid(True)
         plt.legend()
-        plt.figure(2)
+        plt.figure()
         plt.plot(xx, p0[i,:,0]*1e-9,label=load[i])
         plt.ylabel(r'$p_0\left(x\right)$ / GPa')
         plt.title('Hertzian Contact Pressure')
