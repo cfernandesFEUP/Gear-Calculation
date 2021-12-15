@@ -37,7 +37,8 @@ def lines(size, b, pbt, betab, epslon_alpha, epslon_beta, epslon_gama, rb, T1A, 
     L = np.zeros([len(xx),len(bpos)])
     ## POSITIONS ALONG PLANE OF ACTION
     for i in range(len(k)):
-        XC[i] = np.meshgrid(np.add(xx,k[i]*pbt),bpos*np.tan(betab))[0]
+            for j in range(len(bpos)):
+                XC[i,j] = xx + k[i]*pbt + bpos[j]*np.tan(betab)
     ## CONDITIONS FOR THE CALCULATION OF LINES IN CONTACT
     if epslon_beta < 1:
         indA = np.where((XC >= 0)*(XC < COND_A))
