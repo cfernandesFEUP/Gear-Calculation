@@ -7,16 +7,16 @@ def astm(oil, Tlub):
         t = 0.9904
         xl = 0.846
     elif base == 'PAO':
-        s = 0.7382
-        t = 0.1335
+        t = 0.7382
+        s = 0.1335
         xl = 0.650
     elif base == 'PAG':
-        s = 0.5489
-        t = 0.1485
+        t = 0.5489
+        s = 0.1485
         xl = 0.585
     elif base == 'EST':
-        s = 0.6605
-        t = 0.1360
+        t = 0.6605
+        s = 0.1360
         xl = 0.65
     c_astm = 0.7
     Texp_astm = Tlub + 273.15
